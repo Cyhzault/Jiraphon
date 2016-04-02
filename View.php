@@ -69,20 +69,59 @@ class View
 
     function navBar($isConnected)
     {
-    	echo"
-    		<nav class='navbar'>
-    		<a class='btn btn-primary' href='#!'>Bonjour</a>
+        //partie s'affichant dans tous les cas
+        echo"
+            <nav class='navbar navbar-fixed-top'>
+            <div class='container'>
+                <a class='navbar-brand' href='#!'>
+                    <img alt='logo' src='logotempo.png'>
+                </a>
+                ";
 
-
-    		</nav>
+        //cas ou l'utilisateur ne s'est pas encore connecté
+        if(/*!$isConnected*/false){
+    echo"
+                <a class='btn btn-primary navbar-right' href='./login.php'>Se connecter</a>
+            </div>
     	";
+        }
+
+
+        //Cas où l'utilisateur est connecté
+        else if (/*$isConnected*/ true) {
+         //ajouter les liens
+            echo"
+            <li class='dropdown'>
+            <a href='# class='dropdown-toggle' data-toggle='collapse' role='button' 
+            aria-haspopup='true' aria-expanded='false'>Projets <span class='caret'></span></a>
+          <ul class='dropdown-menu'>";
+         /* while($User->projet){
+            echo"<li><a href='#'>$User->projet</a></li>";
+        }*/
+        echo"
+        <li><a href='#'>creer projet</a></li>
+            </ul>
+          <a href='#' class='dropdown-toggle' data-toggle='collapse' role='button' 
+            aria-haspopup='true' aria-expanded='false'>Equipe <span class='caret'></span></a>
+          <ul class='dropdown-menu'>
+            <li><a href='#'>Membres</a></li>
+            <li><a href='#'>Chefs de projet</a></li>
+            <li><a href='#'>Informations</a></li>
+            </ul>
+
+             <a href='#' class='dropdown-toggle navbar-right' data-toggle='collapse' role='button' 
+            aria-haspopup='true' aria-expanded='false'>";/*'$_SESSION['pseudo']'*/echo"Maman Jiraphe<span class='caret'></span></a>
+          <ul class='dropdown-menu'>
+            <li><a href='#'>perso</a></li>
+            <li><a href='./login.php'>deconnexion</a></li>
+            </ul>
+
+        </li>";
+        }
+        echo"</nav>";
     }
 
-
-
-
 }
-
 
 
 
