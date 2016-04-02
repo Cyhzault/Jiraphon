@@ -67,14 +67,30 @@ class View
 
     }
 
+    function addScript()
+    {
+
+        echo"
+            <script type='text/javascript' src='./bootstrap/js/jquery.js'></script>
+            <script type='text/javascript' src='./bootstrap/js/bootstrap.min.js'></script>
+        ";        
+
+    }
+
     function navBar($isConnected)
     {
+
+       
+        
+
+        
         //partie s'affichant dans tous les cas
+        //utilise un navbar-default plutôt. En tout cas pour l'instant. ça marchera mieux.
         echo"
-            <nav class='navbar navbar-fixed-top'>
+            <nav class='navbar navbar-default'>
             <div class='container'>
                 <a class='navbar-brand' href='#!'>
-                    <img alt='logo' src='logotempo.png'>
+                    <img alt='logo' src='./bootstrap/img/logotempo.png'>
                 </a>
                 ";
 
@@ -83,7 +99,7 @@ class View
     echo"
                 <a class='btn btn-primary navbar-right' href='./login.php'>Se connecter</a>
             </div>
-    	";
+        ";
         }
 
 

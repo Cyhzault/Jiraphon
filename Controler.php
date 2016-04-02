@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**
 * 
 */
@@ -51,7 +51,7 @@ class Controler
 	// Termine le document html.
 	private function endHTMLStructure($view)
 	{
-		//$view->addScript();
+		$view->addScript();
 		$view->endBody();
 		$view->endHTML();
 	}
@@ -83,6 +83,7 @@ class Controler
 		$this->view->beginPageWrapper();
 		$this->view->beginJumbotron();
 		$this->view->beginPageHeader($heading);
+		$this->view->showBar();
 		
 	}
 
