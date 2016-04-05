@@ -14,13 +14,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: postgres; Type: COMMENT; Schema: -; Owner: postgres
---
-
-COMMENT ON DATABASE postgres IS 'default administrative connection database';
-
-
---
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
@@ -55,22 +48,22 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: Equipe; Type: TABLE; Schema: public; Owner: postgres
+-- Name: equipe; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE "Equipe" (
-    id integer NOT NULL,
+CREATE TABLE equipe (
+    id_equipe integer NOT NULL,
     spec text
 );
 
 
-ALTER TABLE "Equipe" OWNER TO postgres;
+ALTER TABLE equipe OWNER TO postgres;
 
 --
--- Name: COLUMN "Equipe".spec; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN equipe.spec; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Equipe".spec IS 'spécialité';
+COMMENT ON COLUMN equipe.spec IS 'spécialité';
 
 
 --
@@ -91,104 +84,23 @@ ALTER TABLE "Equipe_id_seq" OWNER TO postgres;
 -- Name: Equipe_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE "Equipe_id_seq" OWNED BY "Equipe".id;
+ALTER SEQUENCE "Equipe_id_seq" OWNED BY equipe.id_equipe;
 
 
 --
--- Name: Equipe_in_projet; Type: TABLE; Schema: public; Owner: postgres
+-- Name: projet; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE "Equipe_in_projet" (
-    id integer NOT NULL,
-    id_equipe bit(4) NOT NULL,
-    id_projet bit(4) NOT NULL
-);
-
-
-ALTER TABLE "Equipe_in_projet" OWNER TO postgres;
-
---
--- Name: TABLE "Equipe_in_projet"; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON TABLE "Equipe_in_projet" IS 'Association 0..n projets peuvent être associés avec 1..n equipes';
-
-
---
--- Name: Equipe_in_projet_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE "Equipe_in_projet_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE "Equipe_in_projet_id_seq" OWNER TO postgres;
-
---
--- Name: Equipe_in_projet_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE "Equipe_in_projet_id_seq" OWNED BY "Equipe_in_projet".id;
-
-
---
--- Name: Membre_equipe; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE "Membre_equipe" (
-    id integer NOT NULL,
-    id_equipe bit(4) NOT NULL,
-    id_utilisateur bit(4) NOT NULL
-);
-
-
-ALTER TABLE "Membre_equipe" OWNER TO postgres;
-
---
--- Name: TABLE "Membre_equipe"; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON TABLE "Membre_equipe" IS 'Association entre 1..n utilisateurs qui appartiennent à 0..n équipes';
-
-
---
--- Name: Membre_equipe_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE "Membre_equipe_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE "Membre_equipe_id_seq" OWNER TO postgres;
-
---
--- Name: Membre_equipe_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE "Membre_equipe_id_seq" OWNED BY "Membre_equipe".id;
-
-
---
--- Name: Projet; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE "Projet" (
-    id integer NOT NULL,
+CREATE TABLE projet (
+    id_projet integer NOT NULL,
     date_deb date NOT NULL,
     date_fin date NOT NULL,
-    description text NOT NULL
+    description text NOT NULL,
+    id_chef integer
 );
 
 
-ALTER TABLE "Projet" OWNER TO postgres;
+ALTER TABLE projet OWNER TO postgres;
 
 --
 -- Name: Projet_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -208,45 +120,89 @@ ALTER TABLE "Projet_id_seq" OWNER TO postgres;
 -- Name: Projet_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE "Projet_id_seq" OWNED BY "Projet".id;
+ALTER SEQUENCE "Projet_id_seq" OWNED BY projet.id_projet;
 
 
 --
--- Name: Tache; Type: TABLE; Schema: public; Owner: postgres
+-- Name: sprint; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE "Tache" (
-    id integer NOT NULL,
-    nom text NOT NULL,
-    "desc" text NOT NULL,
-    etat character varying(9) NOT NULL,
-    date_deb date,
-    date_fin date,
-    validation boolean NOT NULL
+CREATE TABLE sprint (
+    id_sprint integer NOT NULL,
+    date_deb date NOT NULL,
+    date_fin date NOT NULL,
+    id_projet integer NOT NULL
 );
 
 
-ALTER TABLE "Tache" OWNER TO postgres;
+ALTER TABLE sprint OWNER TO postgres;
 
 --
--- Name: COLUMN "Tache"."desc"; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: Sprint_id_sprint_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Tache"."desc" IS 'description';
+CREATE SEQUENCE "Sprint_id_sprint_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "Sprint_id_sprint_seq" OWNER TO postgres;
+
+--
+-- Name: Sprint_id_sprint_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "Sprint_id_sprint_seq" OWNED BY sprint.id_sprint;
 
 
 --
--- Name: COLUMN "Tache".date_deb; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: tache; Type: TABLE; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Tache".date_deb IS 'date début de tache';
+CREATE TABLE tache (
+    id_tache integer NOT NULL,
+    nom text NOT NULL,
+    "desc" text NOT NULL,
+    etat character varying(9) NOT NULL,
+    validation boolean NOT NULL,
+    id_createur integer NOT NULL,
+    date_deb date,
+    duree_est text NOT NULL,
+    duree_re text
+);
+
+
+ALTER TABLE tache OWNER TO postgres;
+
+--
+-- Name: COLUMN tache."desc"; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN tache."desc" IS 'description';
 
 
 --
--- Name: COLUMN "Tache".validation; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN tache.validation; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Tache".validation IS '0: tache non validée par chef 1: tache validée';
+COMMENT ON COLUMN tache.validation IS '0: tache non validée par chef 1: tache validée';
+
+
+--
+-- Name: COLUMN tache.duree_est; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN tache.duree_est IS 'durée estimée';
+
+
+--
+-- Name: COLUMN tache.duree_re; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN tache.duree_re IS 'durée réelle';
 
 
 --
@@ -267,102 +223,62 @@ ALTER TABLE "Tache_id_seq" OWNER TO postgres;
 -- Name: Tache_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE "Tache_id_seq" OWNED BY "Tache".id;
-
-
---
--- Name: Tache_in_sprint; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE "Tache_in_sprint" (
-    id integer NOT NULL,
-    id_sprint bit(4) NOT NULL,
-    id_tache bit(4) NOT NULL
-);
-
-
-ALTER TABLE "Tache_in_sprint" OWNER TO postgres;
-
---
--- Name: TABLE "Tache_in_sprint"; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON TABLE "Tache_in_sprint" IS 'Association 0..n sprints contiennent 1..n taches';
-
-
---
--- Name: Tache_in_sprint_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE "Tache_in_sprint_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE "Tache_in_sprint_id_seq" OWNER TO postgres;
-
---
--- Name: Tache_in_sprint_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE "Tache_in_sprint_id_seq" OWNED BY "Tache_in_sprint".id;
+ALTER SEQUENCE "Tache_id_seq" OWNED BY tache.id_tache;
 
 
 SET default_with_oids = true;
 
 --
--- Name: Utilisateur ; Type: TABLE; Schema: public; Owner: postgres
+-- Name: utilisateur; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE "Utilisateur " (
-    id integer NOT NULL,
+CREATE TABLE utilisateur (
+    id_utilisateur integer NOT NULL,
     nom text NOT NULL,
     prenom text NOT NULL,
     fonction text NOT NULL,
     statut boolean NOT NULL,
     photo oid,
-    mdp character(64)[] NOT NULL
+    mdp character(64) NOT NULL,
+    login text NOT NULL
 );
 
 
-ALTER TABLE "Utilisateur " OWNER TO postgres;
+ALTER TABLE utilisateur OWNER TO postgres;
 
 --
--- Name: TABLE "Utilisateur "; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: TABLE utilisateur; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON TABLE "Utilisateur " IS 'Base représentant utilisateurs / chef de projet (suivant état du statut)';
-
-
---
--- Name: COLUMN "Utilisateur ".id; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON COLUMN "Utilisateur ".id IS 'identifiant ';
+COMMENT ON TABLE utilisateur IS 'Base représentant utilisateurs / chef de projet (suivant état du statut)';
 
 
 --
--- Name: COLUMN "Utilisateur ".statut; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN utilisateur.id_utilisateur; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Utilisateur ".statut IS '0 :utilisateur, 1: chef de projet';
-
-
---
--- Name: COLUMN "Utilisateur ".photo; Type: COMMENT; Schema: public; Owner: postgres
---
-
-COMMENT ON COLUMN "Utilisateur ".photo IS 'photo non obligatoire';
+COMMENT ON COLUMN utilisateur.id_utilisateur IS 'identifiant ';
 
 
 --
--- Name: COLUMN "Utilisateur ".mdp; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN utilisateur.statut; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON COLUMN "Utilisateur ".mdp IS 'encodage sha256';
+COMMENT ON COLUMN utilisateur.statut IS '0 :utilisateur, 1: chef de projet';
+
+
+--
+-- Name: COLUMN utilisateur.photo; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN utilisateur.photo IS 'photo non obligatoire';
+
+
+--
+-- Name: COLUMN utilisateur.mdp; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN utilisateur.mdp IS 'encodage sha256';
 
 
 --
@@ -383,217 +299,380 @@ ALTER TABLE "Utilisateur _id_seq" OWNER TO postgres;
 -- Name: Utilisateur _id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE "Utilisateur _id_seq" OWNED BY "Utilisateur ".id;
+ALTER SEQUENCE "Utilisateur _id_seq" OWNED BY utilisateur.id_utilisateur;
+
+
+SET default_with_oids = false;
+
+--
+-- Name: equipe_in_projet; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE equipe_in_projet (
+    id_equipe integer NOT NULL,
+    id_projet integer NOT NULL
+);
+
+
+ALTER TABLE equipe_in_projet OWNER TO postgres;
+
+--
+-- Name: TABLE equipe_in_projet; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE equipe_in_projet IS 'Association 0..n projets peuvent être associés avec 1..n equipes';
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: membre_equipe; Type: TABLE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "Equipe" ALTER COLUMN id SET DEFAULT nextval('"Equipe_id_seq"'::regclass);
+CREATE TABLE membre_equipe (
+    id_utilisateur integer NOT NULL,
+    id_equipe integer NOT NULL
+);
 
 
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY "Equipe_in_projet" ALTER COLUMN id SET DEFAULT nextval('"Equipe_in_projet_id_seq"'::regclass);
-
+ALTER TABLE membre_equipe OWNER TO postgres;
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: TABLE membre_equipe; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "Membre_equipe" ALTER COLUMN id SET DEFAULT nextval('"Membre_equipe_id_seq"'::regclass);
+COMMENT ON TABLE membre_equipe IS 'Association entre 1..n utilisateurs qui appartiennent à 0..n équipes';
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: tache_in_sprint; Type: TABLE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "Projet" ALTER COLUMN id SET DEFAULT nextval('"Projet_id_seq"'::regclass);
+CREATE TABLE tache_in_sprint (
+    id_sprint integer NOT NULL,
+    id_tache integer NOT NULL
+);
 
 
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY "Tache" ALTER COLUMN id SET DEFAULT nextval('"Tache_id_seq"'::regclass);
-
+ALTER TABLE tache_in_sprint OWNER TO postgres;
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: TABLE tache_in_sprint; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "Tache_in_sprint" ALTER COLUMN id SET DEFAULT nextval('"Tache_in_sprint_id_seq"'::regclass);
+COMMENT ON TABLE tache_in_sprint IS 'Association 0..n sprints contiennent 1..n taches';
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: utilisateur_in_projet; Type: TABLE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "Utilisateur " ALTER COLUMN id SET DEFAULT nextval('"Utilisateur _id_seq"'::regclass);
+CREATE TABLE utilisateur_in_projet (
+    id_utilisateur integer NOT NULL,
+    id_projet integer NOT NULL
+);
+
+
+ALTER TABLE utilisateur_in_projet OWNER TO postgres;
+
+--
+-- Name: id_equipe; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY equipe ALTER COLUMN id_equipe SET DEFAULT nextval('"Equipe_id_seq"'::regclass);
 
 
 --
--- Data for Name: Equipe; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Name: id_projet; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-COPY "Equipe" (id, spec) FROM stdin;
-\.
+ALTER TABLE ONLY projet ALTER COLUMN id_projet SET DEFAULT nextval('"Projet_id_seq"'::regclass);
+
+
+--
+-- Name: id_sprint; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY sprint ALTER COLUMN id_sprint SET DEFAULT nextval('"Sprint_id_sprint_seq"'::regclass);
+
+
+--
+-- Name: id_tache; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tache ALTER COLUMN id_tache SET DEFAULT nextval('"Tache_id_seq"'::regclass);
+
+
+--
+-- Name: id_utilisateur; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY utilisateur ALTER COLUMN id_utilisateur SET DEFAULT nextval('"Utilisateur _id_seq"'::regclass);
 
 
 --
 -- Name: Equipe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"Equipe_id_seq"', 1, false);
-
-
---
--- Data for Name: Equipe_in_projet; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY "Equipe_in_projet" (id, id_equipe, id_projet) FROM stdin;
-\.
-
-
---
--- Name: Equipe_in_projet_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"Equipe_in_projet_id_seq"', 1, false);
-
-
---
--- Data for Name: Membre_equipe; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY "Membre_equipe" (id, id_equipe, id_utilisateur) FROM stdin;
-\.
-
-
---
--- Name: Membre_equipe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"Membre_equipe_id_seq"', 1, false);
-
-
---
--- Data for Name: Projet; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY "Projet" (id, date_deb, date_fin, description) FROM stdin;
-\.
+SELECT pg_catalog.setval('"Equipe_id_seq"', 1, true);
 
 
 --
 -- Name: Projet_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"Projet_id_seq"', 1, false);
+SELECT pg_catalog.setval('"Projet_id_seq"', 1, true);
 
 
 --
--- Data for Name: Tache; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Name: Sprint_id_sprint_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-COPY "Tache" (id, nom, "desc", etat, date_deb, date_fin, validation) FROM stdin;
-\.
+SELECT pg_catalog.setval('"Sprint_id_sprint_seq"', 2, true);
 
 
 --
 -- Name: Tache_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"Tache_id_seq"', 1, false);
-
-
---
--- Data for Name: Tache_in_sprint; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY "Tache_in_sprint" (id, id_sprint, id_tache) FROM stdin;
-\.
-
-
---
--- Name: Tache_in_sprint_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"Tache_in_sprint_id_seq"', 1, false);
-
-
---
--- Data for Name: Utilisateur ; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY "Utilisateur " (id, nom, prenom, fonction, statut, photo, mdp) FROM stdin;
-\.
+SELECT pg_catalog.setval('"Tache_id_seq"', 2, true);
 
 
 --
 -- Name: Utilisateur _id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"Utilisateur _id_seq"', 1, false);
+SELECT pg_catalog.setval('"Utilisateur _id_seq"', 5, true);
 
 
 --
--- Name: Equipe_in_projet_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Data for Name: equipe; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "Equipe_in_projet"
-    ADD CONSTRAINT "Equipe_in_projet_pkey" PRIMARY KEY (id);
+COPY equipe (id_equipe, spec) FROM stdin;
+\.
+
+
+--
+-- Data for Name: equipe_in_projet; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY equipe_in_projet (id_equipe, id_projet) FROM stdin;
+\.
+
+
+--
+-- Data for Name: membre_equipe; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY membre_equipe (id_utilisateur, id_equipe) FROM stdin;
+\.
+
+
+--
+-- Data for Name: projet; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY projet (id_projet, date_deb, date_fin, description, id_chef) FROM stdin;
+\.
+
+
+--
+-- Data for Name: sprint; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY sprint (id_sprint, date_deb, date_fin, id_projet) FROM stdin;
+\.
+
+
+--
+-- Data for Name: tache; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tache (id_tache, nom, "desc", etat, validation, id_createur, date_deb, duree_est, duree_re) FROM stdin;
+\.
+
+
+--
+-- Data for Name: tache_in_sprint; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY tache_in_sprint (id_sprint, id_tache) FROM stdin;
+\.
+
+
+--
+-- Data for Name: utilisateur; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY utilisateur (id_utilisateur, nom, prenom, fonction, statut, photo, mdp, login) FROM stdin;
+\.
+
+
+--
+-- Data for Name: utilisateur_in_projet; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY utilisateur_in_projet (id_utilisateur, id_projet) FROM stdin;
+\.
 
 
 --
 -- Name: Equipe_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "Equipe"
-    ADD CONSTRAINT "Equipe_pkey" PRIMARY KEY (id);
-
-
---
--- Name: Membre_equipe_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY "Membre_equipe"
-    ADD CONSTRAINT "Membre_equipe_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY equipe
+    ADD CONSTRAINT "Equipe_pkey" PRIMARY KEY (id_equipe);
 
 
 --
 -- Name: Projet_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "Projet"
-    ADD CONSTRAINT "Projet_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY projet
+    ADD CONSTRAINT "Projet_pkey" PRIMARY KEY (id_projet);
 
 
 --
--- Name: Tache_in_sprint_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: Sprint_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "Tache_in_sprint"
-    ADD CONSTRAINT "Tache_in_sprint_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY sprint
+    ADD CONSTRAINT "Sprint_pkey" PRIMARY KEY (id_sprint);
 
 
 --
 -- Name: Tache_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "Tache"
-    ADD CONSTRAINT "Tache_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY tache
+    ADD CONSTRAINT "Tache_pkey" PRIMARY KEY (id_tache);
 
 
 --
 -- Name: Utilisateur _pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY "Utilisateur "
-    ADD CONSTRAINT "Utilisateur _pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY utilisateur
+    ADD CONSTRAINT "Utilisateur _pkey" PRIMARY KEY (id_utilisateur);
+
+
+--
+-- Name: equipe_in_projet_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY equipe_in_projet
+    ADD CONSTRAINT equipe_in_projet_pkey PRIMARY KEY (id_equipe, id_projet);
+
+
+--
+-- Name: membre_equipe_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY membre_equipe
+    ADD CONSTRAINT membre_equipe_pkey PRIMARY KEY (id_utilisateur, id_equipe);
+
+
+--
+-- Name: tache_in_sprint_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tache_in_sprint
+    ADD CONSTRAINT tache_in_sprint_pkey PRIMARY KEY (id_sprint, id_tache);
+
+
+--
+-- Name: utilisateur_in_projet_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY utilisateur_in_projet
+    ADD CONSTRAINT utilisateur_in_projet_pkey PRIMARY KEY (id_utilisateur, id_projet);
+
+
+--
+-- Name: equipe_in_projet_id_equipe_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY equipe_in_projet
+    ADD CONSTRAINT equipe_in_projet_id_equipe_fkey FOREIGN KEY (id_equipe) REFERENCES equipe(id_equipe) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: equipe_in_projet_id_projet_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY equipe_in_projet
+    ADD CONSTRAINT equipe_in_projet_id_projet_fkey FOREIGN KEY (id_projet) REFERENCES projet(id_projet) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: foreign_createur; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tache
+    ADD CONSTRAINT foreign_createur FOREIGN KEY (id_createur) REFERENCES utilisateur(id_utilisateur);
+
+
+--
+-- Name: membre_equipe_id_equipe_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY membre_equipe
+    ADD CONSTRAINT membre_equipe_id_equipe_fkey FOREIGN KEY (id_equipe) REFERENCES equipe(id_equipe) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: membre_equipe_id_utilisateur_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY membre_equipe
+    ADD CONSTRAINT membre_equipe_id_utilisateur_fkey FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id_utilisateur) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: projet_id_chef_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY projet
+    ADD CONSTRAINT projet_id_chef_fkey FOREIGN KEY (id_chef) REFERENCES utilisateur(id_utilisateur) ON UPDATE CASCADE ON DELETE SET NULL;
+
+
+--
+-- Name: sprint_id_projet_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY sprint
+    ADD CONSTRAINT sprint_id_projet_fkey FOREIGN KEY (id_projet) REFERENCES projet(id_projet) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tache_in_sprint_id_sprint_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tache_in_sprint
+    ADD CONSTRAINT tache_in_sprint_id_sprint_fkey FOREIGN KEY (id_sprint) REFERENCES sprint(id_sprint) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tache_in_sprint_id_tache_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tache_in_sprint
+    ADD CONSTRAINT tache_in_sprint_id_tache_fkey FOREIGN KEY (id_tache) REFERENCES tache(id_tache) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: utilisateur_in_projet_id_projet_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY utilisateur_in_projet
+    ADD CONSTRAINT utilisateur_in_projet_id_projet_fkey FOREIGN KEY (id_projet) REFERENCES projet(id_projet) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: utilisateur_in_projet_id_utilisateur_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY utilisateur_in_projet
+    ADD CONSTRAINT utilisateur_in_projet_id_utilisateur_fkey FOREIGN KEY (id_utilisateur) REFERENCES utilisateur(id_utilisateur) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
