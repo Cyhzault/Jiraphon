@@ -91,131 +91,80 @@ class View
 
     }
 
+  
     function navBar($isConnected)
     {
-
-        echo'
-        <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-         <!-- span class="icon-bar" pour l\'icone de passage en colonne quand zoom -->
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
+        $str="
+        <nav class='navbar navbar-default'>
+  <div class='container-fluid'>
+    <div class='navbar-header'>
+      <button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#bs-example-navbar-collapse-1' aria-expanded='false'>
+        <span class='sr-only'>Toggle navigation</span>
+         <!-- span class='icon-bar' pour l\'icone de passage en colonne quand zoom -->
+        <span class='icon-bar'></span>
+        <span class='icon-bar'></span>
+        <span class='icon-bar'></span>
+        <span class='icon-bar'></span>
       </button>
-      <a class="navbar-brand" href="./index.php">
-                    <img alt="logo" src="./bootstrap/img/logotempo.png">
+      <a class='navbar-brand' href='./index.php'>
+                    <img alt='logo' src='./bootstrap/img/logotempo.png'>
         </a>
     </div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
+    <div class='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>";
 
+      if(isset($_SESSION['pseudo']) ){
+        $str.="
+        <ul class='nav navbar-nav'>
       <!-- menu projets-->
-      <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projets <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Safari</a></li>
-            <li><a href="#">Croisiere</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Nouveau Projet</a></li>
+      <li class='dropdown'>
+          <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Projets <span class='caret'></span></a>
+          <ul class='dropdown-menu'>
+            <li><a href='#'>Safari</a></li>
+            <li><a href='#'>Croisiere</a></li>
+            <li role='separator' class='divider'></li>
+            <li><a href='#'>Nouveau Projet</a></li>
           </ul>
         </li>
 
         <!-- menu equipe -->
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Equipe <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Membres</a></li>
-            <li><a href="#">Chefs de projet</a></li>
-            <li><a href="#">Infos equipes</a></li>
+        <li class='dropdown'>
+          <a href='#'' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Equipe <span class='caret'></span></a>
+          <ul class='dropdown-menu'>
+            <li><a href='#'>Membres</a></li>
+            <li><a href='#'>Chefs de projet</a></li>
+            <li><a href='#'>Infos equipes</a></li>
           </ul>
         </li>
       </ul>
 
       <!-- menu perso-->
-      <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Maman Jiraphe <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Perso</a></li>
-            <li><a href="./index.php?d=5">Deconnection</a></li>
+      <ul class='nav navbar-nav navbar-right'>
+        <li class='dropdown'>
+          <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>".$_SESSION['pseudo']."<span class='caret'></span></a>
+          <ul class='dropdown-menu'>
+            <li><a href='#'>Perso</a></li>
+            <li><a href='./index.php?d=5'>Deconnection</a></li>
           </ul>
         </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
+      </ul>";
+    }
+
+    else{
+      $str.="
+      <ul class='nav navbar-nav pull-right'>
+            <a class='btn btn-primary pull-right' href='./login.php'>Se connecter</a>
+           </ul>";
+        }
+
+    $str.=" </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
-</nav>';
+</nav>";
 
-       
-        
-
-        
-        if (false){
-        //partie s'affichant dans tous les cas
-        //utilise un navbar-default plutôt. En tout cas pour l'instant. ça marchera mieux.
-        echo"
-            <nav class='navbar navbar-default'>
-            <div class='container'>
-                <a class='navbar-brand' href='#!'>
-                    <img alt='logo' src='./bootstrap/img/logotempo.png'>
-                </a>
-                ";
-
-        //cas ou l'utilisateur ne s'est pas encore connecté
-        if(/*!$isConnected*/false){
-    echo"
-                <a class='btn btn-primary navbar-right' href='./login.php'>Se connecter</a>
-            </div>
-        ";
-        }
-
-
-        //Cas où l'utilisateur est connecté
-        else {
-         //ajouter les liens
-            echo"
-            <ul role='presentation' class='dropdown'>
-            <li class='dropdown'>
-            <a href='# class='dropdown-toggle' data-toggle='collapse' role='button' 
-            aria-haspopup='true' aria-expanded='false'>Projets <span class='caret'></span></a>
-          <ul class='dropdown-menu'>";
-         /* while($User->projet){
-            echo"<li><a href='#'>$User->projet</a></li>";
-        }*/
-        echo"
-        <li><a href='#'>creer projet</a></li>
-            </ul>
-            </li>
-            </ul>
-          <li role='presentation' class='dropdown'>
-          <a class='dropdown-toggle' data-toggle='collapse' role='button' 
-            aria-haspopup='true' aria-expanded='false'>Equipe <span class='caret'></span></a>
-          <ul class='dropdown-menu'>
-            <li><a href='#'>Membres</a></li>
-            <li><a href='#'>Chefs de projet</a></li>
-            <li><a href='#'>Informations</a></li>
-            </ul>
-            </li>
-
-             <li role='presentation' class='dropdown'>
-             <a class='dropdown-toggle navbar-right' data-toggle='dropdown' role='button' 
-            aria-haspopup='true' aria-expanded='false'>";/*'$_SESSION['pseudo']'*/echo"Maman Jiraphe<span class='caret'></span></a>
-          <ul class='dropdown-menu'>
-            <li><a href='#'>perso</a></li>
-            <li><a href='./login.php'>deconnexion</a></li>
-            </ul>
-            </li>
-
-        </li>";
-        }
-        echo"</nav>";
-    }}
+echo $str; }
 
 }
+
 
 
 
