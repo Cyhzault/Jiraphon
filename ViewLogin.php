@@ -39,7 +39,7 @@ class ViewLogin extends View
 				<button class='btn btn-primary' type='submit'>Connexion</button>
 				<hr>
 				<div class='text-center'>
-					<a href='inscription.php'>Pas de compte ? Cliquez ici pour vous inscrire</a>
+					<a class='link-inscription' href='inscription.php'>Pas de compte ? Cliquez ici pour vous inscrire</a>
 				</div>
 			</form>
 		";

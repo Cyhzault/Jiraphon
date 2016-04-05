@@ -43,6 +43,7 @@ class Controler
 		$this->view->beginHead();
 		$this->view->title($tabTitle);
 		$this->view->addCSS();
+		$this->view->setCharset("UTF-8");
 		$this->view->endHead();
 		$this->view->beginBody();
 

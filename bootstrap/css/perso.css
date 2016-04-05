@@ -1,11 +1,99 @@
+/*
+* @author Auroxy
+*/
+
+
+.page-header
+{
+	border-bottom: 0px;
+}
+
 #page-wrapper
 {
     padding-left: 5%;
     padding-right: 5%;
+    color:black;
 }
 
 .JiraphonBar
 {
-   color: sienna;
+   color:sienna;
 
+}
+
+.Jumbotron
+{
+	background-color: rgba(255,91,0,0.96);
+	border:1px solid rgb(53,53,53);
+}
+
+body 
+{
+	color: rgb(224,95,0);
+}
+
+.btn-primary 
+{
+	color: rgb(255,194,103);
+	background-color: rgb(88,6,6);
+	border-color: inherit;
+
+}
+
+.navbar-default
+{
+	background-color: rgb(232,227,201);
+}
+
+.dropdown-toggle
+{
+	color: rgb(224,95,0);
+}
+
+a:hover
+{
+	color: white;
+}
+
+.btn:hover
+{
+	border-color: rgb(83,6,6);
+	background-color: inherit;
+	color:rgb(83,6,6);
+}
+
+.navbar 
+{
+    border-radius: 4px;
+}
+
+.navbar-default 
+{
+    border-color: rgba(255,91,0,0.96);
+    background-color: rgb(53,53,53);
+}
+
+.link-inscription
+{
+	color:black ; 
+	font-size: 14px
+}
+
+.alert-danger {
+    color: #FFFFFF;
+    background-color: #FF0000;
+    border-color: #FFFFFF;
+}
+
+
+.page-header
+{
+	color:ivory;
+}
+
+.alert-success
+{
+	color:#0A5A0C;
+    background-color: #B0F976;
+    border-color: lightgrey;
 }
