@@ -25,7 +25,7 @@ class View
     function beginLine(){echo "<tr>";}
     function beginColumn(){echo "<td>";}
     function beginTitleColumn(){echo "<th>";}
-    function showBar(){echo "<hr class='msdbBar'>";}
+    function showBar(){echo "<hr class='JiraphonBAR'>";}
 
 
     //fermetures de balises simples
@@ -77,7 +77,7 @@ class View
     function authentificationRequired()
     {   //TODO
         echo"
-            <div class='alert alert-danger'>Zêtes pas co!</div>
+            <div class='alert alert-danger'>Vous n'êtes pas connecté.</div>
         ";
     }
 
@@ -118,7 +118,7 @@ class View
         <ul class='nav navbar-nav'>
       <!-- menu projets-->
       <li class='dropdown'>
-          <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Projets <span class='caret'></span></a>
+          <a href='./project.php' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Projets <span class='caret'></span></a>
           <ul class='dropdown-menu'>
             <li><a href='#'>Safari</a></li>
             <li><a href='#'>Croisiere</a></li>
@@ -164,6 +164,7 @@ class View
 echo $str; }
 
 }
+
 
 
 

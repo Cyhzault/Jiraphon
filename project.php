@@ -18,18 +18,11 @@
 		$header = "Connexion requise";
 	}else if(isset($_GET['projectId']))
 	{
-		$project = new Project($model->getProjectById($_GET['projectId']));
-		$header = $project->getNomProjet();
+		$project = new Project($model->getProjectById(htmlspecialchars($_GET['projectId'])));
+		$header = $project->getNom_projet();
 	}
 
 	$ctrl->beginPage($title,$header);
-
-
-
-
-
-
-
 
 
 	//////////////////////  Début contenu \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -41,12 +34,18 @@
 		$view->showBar();
 		if(isset($project))
 		{
-			$view->showProjectData();
-			$sprints = $model->getAllSprintByProjectId($project->getIdProjet());
-
+			require_once("./UserManager.Class.php");
+			$um = new UserManager($model->getDb());
+			$view->showProjectData($project);
+			$sprints = $model->getAllSprintByProjectId($project->getId_projet());
+			$user = $um->getUserByPseudo($_SESSION['pseudo']); //devrait passer par l'id mais osef
+			$todo = ""; //Il faut créer un TaskManager qui permet de récuperer les données des projets
+			$inProgress = "";
+			$done = "";
+			$view->showKanban($user,$todo,$inProgress,$done);
 
 		}else{
-
+			
 			$projects =  $model->getAllProjectsByUsername($_SESSION['pseudo']);
 			$view->showProjectsList($projects);
 

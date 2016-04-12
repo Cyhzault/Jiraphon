@@ -12,6 +12,9 @@ class ViewLogin extends View
 		
 	}
 
+
+	function beginContainer(){echo "<div class='container-fluid login-container'>";}// (Auroxy) : petite modif pour le css
+
 	function showIsConnected($data){echo "Vous êtes connecté en tant que ".$data.".";}
 
 	function showConnectionSuccess()

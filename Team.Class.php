@@ -18,17 +18,17 @@ class Team
 		$this->hydrate($data);
 	}
 
-	public getIdEquipe(){return $this->idEquipe;}
-	public getNomEquipe(){return $this->nomEquipe;}
-	public getdescription(){return $this->description;}
-	public getSpecialite(){return $this->specialite;}
-	public getUtilisateurs(){return $this->utilisateurs;}
+	public function getIdEquipe(){return $this->idEquipe;}
+	public function getNomEquipe(){return $this->nomEquipe;}
+	public function getdescription(){return $this->description;}
+	public function getSpecialite(){return $this->specialite;}
+	public function getUtilisateurs(){return $this->utilisateurs;}
 
-	private setIdEquipe($idEquipe){$this->idEquipe=$idEquipe;}
-	private setNomEquipe($nomEquipe){$this->nomEquipe=$nomEquipe;}
-	private setDescription($description){$this->description=$description;}
-	private setSpecialite($specialite){$this->specialite=$specialite;}
-	private setUtilisateurs($utilisateurs){$this->utilisateurs=$utilisateurs;}
+	private function setIdEquipe($idEquipe){$this->idEquipe=$idEquipe;}
+	private function setNomEquipe($nomEquipe){$this->nomEquipe=$nomEquipe;}
+	private function setDescription($description){$this->description=$description;}
+	private function setSpecialite($specialite){$this->specialite=$specialite;}
+	private function setUtilisateurs($utilisateurs){$this->utilisateurs=$utilisateurs;}
 
 
 //a modif
