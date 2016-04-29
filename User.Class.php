@@ -7,38 +7,44 @@
 class User
 {
 	//attributs
-	private $idUtilisateur;
-	private $pseudo;
-	private $motDePasse;
-	private $courriel;
+	private $id_utilisateur;
+	private $login;
+	private $mdp;
+	private $fonction;
+	private $statut;
 	private $nom;
 	private $prenom;
+	private $photo;
 
 	function __construct($data)
 	{
 		$this->hydrate($data);
 	}
 
-	public function getIdUtilisateur(){return $this->idUtilisateur;}
-	public function getPseudo(){return $this->pseudo;}
-	public function getMotDePasse(){return $this->motDePasse;}
-	public function getCourriel(){return $this->courriel;}
+	public function getId_utilisateur(){return $this->id_utilisateur;}
+	public function getLogin(){return $this->login;}
+	public function getMdp(){return $this->mdp;}
+	public function getFonction(){return $this->fonction;}
+	public function getStatut(){return $this->statut;}
 	public function getNom(){return $this->nom;}
 	public function getPrenom(){return $this->prenom;}
+	public function getPhoto(){return $this->photo;}
 
 
-	private function setId_utilisateur($idUtilisateur){$this->idUtilisateur=$idUtilisateur;}
-	private function setPseudo($pseudo){$this->psuedo=$pseudo;}
-	private function setMotDePasse($motDePasse){$this->getMotDePasse=$motDePasse;}
-	private function setCourriel($courriel){$this->courriel=$courriel;}
+	private function setId_utilisateur($id_utilisateur){$this->id_utilisateur=$id_utilisateur;}
+	private function setLogin($login){$this->login=$login;}
+	private function setMdp($mdp){$this->mdp=$mdp;}
+	private function setFonction($fonction){$this->fonction=$fonction;}
+	private function setStatut($statut){$this->statut=$statut;}
 	private function setNom($nom){$this->nom = $nom;}
 	private function setPrenom($prenom){$this->prenom = $prenom;}
+	private function setPhoto($photo){$this->photo= $photo;}
 
 
 	public function dataToArray()
 	{
 
-		$data = array('idUtilisateur' => $this->idUtilisateur, 'pseudo' => $this->pseudo, 'motDePasse' => $this->motDePasse, 'courriel'=>$this->courriel);
+		$data = array('id_utilisateur' => $this->id_utilisateur, 'pseudo' => $this->pseudo, 'mdp' => $this->mdp, 'fonction' => $this->fonction, 'statut' => $this->statut, 'nom' => $this->nom, 'prenom' => $this->prenom, 'photo' => $this->photo);
 		
 		return $data;
 	}

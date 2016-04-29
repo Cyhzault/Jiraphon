@@ -26,10 +26,10 @@ class Project
 	public function getDescription(){return $this->description;}
 	public function getCommanditaire(){return $this->commanditaire;}
 
-	private function setId_projet($idProjet){$this->id_projet=$idProjet;}
-	private function setNom_projet($nomProjet){$this->nom_projet=$nomProjet;}
-	private function setDate_fin($deadline){$this->date_fin=$deadline;}
-	private function setDate_deb($dateDebut){$this->date_deb=$dateDebut;}
+	private function setId_projet($id_projet){$this->id_projet=$id_projet;}
+	private function setNom_projet($nom_projet){$this->nom_projet=$nom_projet;}
+	private function setDate_fin($date_fin){$this->date_fin=$date_fin;}
+	private function setDate_deb($date_deb){$this->date_deb=$date_deb;}
 	public function setDescription($description){$this->description=$description;}
 	private function setCommanditaire($commanditaire){$this->commanditaire=$commanditaire;}
 

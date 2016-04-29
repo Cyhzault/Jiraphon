@@ -129,11 +129,8 @@ class View
 
         <!-- menu equipe -->
         <li class='dropdown'>
-          <a href='#'' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Equipe <span class='caret'></span></a>
-          <ul class='dropdown-menu'>
-            <li><a href='#'>Membres</a></li>
-            <li><a href='#'>Chefs de projet</a></li>
-            <li><a href='#'>Infos equipes</a></li>
+          <a href='equipe.php' >Equipe </a>
+          
           </ul>
         </li>
       </ul>
