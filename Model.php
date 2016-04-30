@@ -17,12 +17,19 @@ class Model
 	{
 		try {
 
-			$bdd = new PDO('pgsql:host=localhost;dbname=postgres','postgres','MOT_DE_PASSE'); //remplacer MOT_DE_PASSE par votre mdp db.
+			$bdd = new PDO('pgsql:host=localhost;dbname=Jiraphon','postgres','2j\'apgsql2'); //remplacer MOT_DE_PASSE par votre mdp db.
 			return $bdd;
 
 		} catch (PDOException $e) {
 			die("Connexion à la base de donnée impossible:".$e->getMessage());
 
+		}
+	}
+	public function disconnect()
+	{
+		if(isset($_SESSION["id"]))
+		{
+			session_destroy();
 		}
 	}
 

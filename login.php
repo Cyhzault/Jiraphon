@@ -8,7 +8,6 @@
 	$ctrl = new Controler();
 	$view = new ViewLogin();
 	$model = new ModelLogin();
-
 	$ctrl->beginPage("Login","Page de connexion");
 	//////////////////////  Début contenu \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -31,14 +30,30 @@
 	}
 
 	if(isset($_SESSION['pseudo']))
-	{
-
 		$view->showIsConnected($_SESSION['pseudo']);
 
-	}else{
+	elseif (isset($_GET['inscription'])) 
+	{
+		$array=array("","","","","","");
+		if(isset($_POST['nom']))
+		{
+			$array=$model->inscription($_POST['nom'],$_POST['prenom'],$_POST['pseudo_i'],$_POST['pswd_i'],$_POST['pswd_verif'],$_POST['fonction'],$_FILES["photo"]);
 
-		$view->showConnectionFormulary();
-	}	
+			if(strcmp($array[0],"")==0)
+				$view->showInscriptionSuccess();
+
+			else{
+				$view->showInscriptionFailed($array[0]);
+				$view->showInscriptionFormulary($array);
+			}
+
+		}
+		else
+			$view->showInscriptionFormulary($array);
+	}
+
+	else
+		$view->showConnectionFormulary();	
 
 	$view->endDiv();
 	

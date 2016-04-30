@@ -7,25 +7,24 @@
 class Team
 {
 	//attributs
-	private $idEquipe;
-	private $nomEquipe;
-	private $description;
+	private $id_equipe;
+	private $nom_equipe;
 	private $specialite;
 	private $utilisateurs;
 
-	function __construct($data)
+	function __construct($data,$liste_u)
 	{
-		$this->hydrate($data);
+		$this->hydrate($data,$liste_u);
 	}
 
-	public function getIdEquipe(){return $this->idEquipe;}
-	public function getNomEquipe(){return $this->nomEquipe;}
-	public function getdescription(){return $this->description;}
+	public function getId_equipe(){return $this->id_equipe;}
+	public function getNom_equipe(){return $this->nom_equipe;}
+	public function getDescription(){return $this->description;}
 	public function getSpecialite(){return $this->specialite;}
 	public function getUtilisateurs(){return $this->utilisateurs;}
 
-	private function setIdEquipe($idEquipe){$this->idEquipe=$idEquipe;}
-	private function setNomEquipe($nomEquipe){$this->nomEquipe=$nomEquipe;}
+	private function setId_equipe($id_equipe){$this->id_equipe=$id_equipe;}
+	private function setNom_equipe($nom_equipe){$this->nom_equipe=$nom_equipe;}
 	private function setDescription($description){$this->description=$description;}
 	private function setSpecialite($specialite){$this->specialite=$specialite;}
 	private function setUtilisateurs($utilisateurs){$this->utilisateurs=$utilisateurs;}
@@ -34,12 +33,12 @@ class Team
 //a modif
 	public function dataToArray()
 	{
-		$data = array('idEquipe' => $this->idEquipe, 'nomEquipe' => $this->nomEquipe,'description' => $this->description, 'specialite' => $this->specialite, 
+		$data = array('id_equipe' => $this->idEquipe, 'nom_equipe' => $this->nomEquipe,'description' => $this->description, 'specialite' => $this->specialite, 
 			'utilisateurs'=>$this->utilisateurs);
 		return $data;
 	}
 
-	public function hydrate(array $donnees)
+	public function hydrate(array $donnees, array $utilisateurs)
 	{
 		// différents cas particuliers à traiter. Ici aucun.
 		foreach ($donnees as $key => $value)
@@ -53,6 +52,8 @@ class Team
 			}
 		
 		}
+
+		$this->setUtilisateurs($utilisateurs);
 
 	}
 }
