@@ -4,6 +4,7 @@
  * Author: Ambre
  */
 require_once('./View.php');
+echo " <link href='./bootstrap/css/equipe.css' rel='stylesheet'>";
 
 class ViewEquipe extends View
 {
@@ -14,13 +15,16 @@ class ViewEquipe extends View
      */
     public function showProjectsList($projects)
     {
-    	echo "<CENTER><h2> Projets </h2>";
+    	echo "
+    	<div class='tableau_proj'>
+    	<CENTER>
+    	<h2> Projets </h2>";
     	$cmpt=0;
     	$nb_colonne=3;
     	$nb_ligne=ceil(sizeof($projects)/$nb_colonne);
 
         echo "
-    	<TABLE width=70% border=0>" ;
+    	<TABLE width=70% border=0 class='table'>" ;
     	for($i=0; $i<$nb_ligne; $i++)
     	{
     		echo "<TR>";
@@ -33,7 +37,10 @@ class ViewEquipe extends View
 			echo "</TR>";
     	}
 		
-		echo "</TABLE></CENTER>
+		echo "
+		</TABLE>
+		</CENTER>
+		</div>
 		<ul>";
     }
 
@@ -43,22 +50,36 @@ class ViewEquipe extends View
      */
     public function showNomProject($projet)
     {
-    		echo "<li> <h2> Projet " . $projet->getNom_projet() . " </h2> </li>";	
+    		echo "<div class='panel-heading'> Projet " . $projet->getNom_projet() . " </div>";	
     }
 
-    public function showChefProjet($user)
+    public function showChefProjet($user,$id)
     {
     	echo "
     	<CENTER>
-    	<h4> Chef de projet </h4>
-    	<img src=". $user->getPhoto() . " alt='Photo chef de projet' class='img-rounded' style='max-width:20%'>
+    	
+    	<div style='position: relative;'>
+    		<div style='width:20%'  onmousemove='Showinformations(".$id.")' onmouseout='Hideinformations(".$id. ")'>
+    			<img id='image".$id."' src=". $user->getPhoto() . " alt='Photo chef de projet' class='img-rounded' style='max-width:100%;'>
+    			<div class='informations_cp' id='".$id. "'>
+				<center>
+      				<ul>
+      					<li><p>" . $user->getNom() . "</p></li>
+      					<li><p>" . $user->getPrenom() . "</p></li>
+      					<li><p>" . $user->getFonction() . "</p></li>
+      				</ul>
+      			</center>
+    			</div>
+    		</div>
+	  	</div>
+      <h4> Chef de projet </h4>
     	</CENTER>";
     }
 
     public function ListeEquipe($etat)
     {
     	if($etat)
-    		echo "<ul class=equipe>";
+    		echo "<ul class='list-group'>";
     	else
     		echo"</ul>";
     }
@@ -66,24 +87,57 @@ class ViewEquipe extends View
      public function ListeProjet($etat,$projet)
     {
     	if($etat)
-    		echo "<div id=" . $projet->getId_projet() . ">";
+    		echo "<li style='clear:left;'><div class='panel panel-default' id=" . $projet->getId_projet() . ">";
     	else
-    		echo"</div>";
+    		echo"</div></li>";
     }
 
 
-    public function showEquipe($equipe)
+    public function showEquipe($equipe,$compteur,$id)
     {
     	echo "
-  		<li><h3> Equipe: ". $equipe->getNom_equipe() . "</h3></li>";
-  		//var_dump($equipe->getUtilisateurs());
+  		<li style='clear:left;' class='list-group-item'><h3> Equipe ".$compteur.": ". $equipe->getNom_equipe() . "</h3>";
+
   		foreach($equipe->getUtilisateurs() as $membre)
   		{
-  			
-  			echo " <img src=". $membre->getPhoto() . " alt='Photo membre ' class='img-rounded' style='max-width: 15%; margin: 20px;'>";
+        $id= $id. $membre->getId_utilisateur();
+  			echo "
+  			<div class='equipe' onmousemove='Showinformations(".$id.")' onmouseout='Hideinformations(".$id.")'>
+  				<div style='width:100%' >
+	      			<center><img id='image".$id. "' src=". $membre->getPhoto() . " alt='Photo membre' class='img-rounded' style='max-width: 70%;' ></center>
+
+	      			<div id='". $id. "' class='informations_m'>
+	      				
+	      				<ul>
+	      					<li><p>" . $membre->getNom() . "</p></li>
+	      					<li><p>" . $membre->getPrenom() . "</p></li>
+	      					<li><p>" . $membre->getFonction() . "</p></li>
+	      				</ul>
+	      				
+	  			 	</div>
+	  			 </div>
+			</div>";
   		}
+  		echo "<div class='spacer' style='clear: both;''></div></li>";
     }
 
 }
 
 ?>
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js'></script>
+<script type="text/javascript">
+
+function Showinformations(id) 
+{
+    document.getElementById("image"+id).style.opacity = "0.4"; 
+    document.getElementById(id).style.visibility= "visible";
+}
+
+function Hideinformations(id)
+{
+	document.getElementById("image"+id).style.opacity =  "1";
+  document.getElementById(id).style.visibility= "hidden";
+	
+}
+
+</script>
