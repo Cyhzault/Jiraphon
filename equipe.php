@@ -24,10 +24,10 @@
 		$view->ListeProjet(true,$projet);
 		$view->showNomProject($projet);
 
-		//Affichage chef projet
+		//Affichage info projet / chef projet
 		$user = $modelpro->getUtilisateurById($projet->getCommanditaire());
 		$id=$projet->getId_projet().$user->getId_utilisateur();
-		$view->showChefProjet($user,$id);
+		$view->showProjet($user,$projet,$id);
 
 		//Affichage equipe
 		$equipes= $modelpro->getAllTeamInProject($projet->getId_projet());

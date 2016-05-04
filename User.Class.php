@@ -10,11 +10,11 @@ class User
 	private $id_utilisateur;
 	private $login;
 	private $mdp;
-	private $fonction;
 	private $statut;
 	private $nom;
 	private $prenom;
 	private $photo;
+	private $fonction;
 
 	function __construct($data)
 	{

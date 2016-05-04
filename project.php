@@ -34,25 +34,39 @@
 		$view->showBar();
 		if(isset($project))
 		{
+			// Création des managers
 			require_once("./UserManager.Class.php");
+			require_once("./TaskManager.Class.php");
+            require_once("./TeamManager.Class.php");
 			$um = new UserManager($model->getDb());
+			$tm = new TaskManager($model->getDb());
+			$cm = new TeamManager($model->getDb());
+
+			//Affichage des infos du projet
 			$view->showProjectData($project);
+
 			$sprints = $model->getAllSprintByProjectId($project->getId_projet());
+
+			//récupération de l'utilisateur courant
 			$user = $um->getUserByPseudo($_SESSION['pseudo']); //devrait passer par l'id mais osef
-			$todo = ""; //Il faut créer un TaskManager qui permet de récuperer les données des projets
-			$inProgress = "";
-			$done = "";
-			$view->showKanban($user,$todo,$inProgress,$done);
+
+
+
+			//récupération de l'équipe de l'utilisateur.
+			$teamId = $cm->getTeamIdFromUserId($user->getIdUtilisateur());
+            $team = $cm->getUsersFromTeamId($teamId);
+
+            $view->showTeamListDropdown($user,$team);
+
+			$view->displayAllKanbans($user,$team,$tm,$project);
 
 		}else{
 			
 			$projects =  $model->getAllProjectsByUsername($_SESSION['pseudo']);
 			$view->showProjectsList($projects);
-
-
-
-
+            
 		}
+
 
 
 	}
@@ -70,4 +84,3 @@
 
 
 
-?>

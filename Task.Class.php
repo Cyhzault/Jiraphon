@@ -2,42 +2,54 @@
 
 /**
 * @author Auroxy
+*@author Niark
 */
 class Task 
 {
-	private $idtache;
-	private $idprojet;
-	private $statut;
-	private $idcreateur;
+	private $idTache;
+	private $nom;
 	private $desciption;
-	private $dureeestimee;
-	private $dureereele;
+	private $statut;
+	private $dateDebut;
+	private $dateFin;
+	private $dureeEstimee;
+	private $validation;
+	private $idCreateur;
+	private $idUtilisateur;
+	private $dureeReele;
 
 	function __construct($data)
 	{
 		$this->hydrate($data);
 	}
-function getIdTache(){return $this->$idtache}
-function getIdProjet(){return $this->$idprojet}
-function getStatut(){return $this->$statut}
-function getIdCreateur(){return $this->$idcreateur}
-function getDescription(){return $this->$desciption}
-function getDureeEstimee(){return $this->$dureeestimee}
-function getDureeReele(){return $this->dureereele}
+function getIdTache(){return $this->idTache;}
+function getNom(){return $this->nom;}
+function getDescription(){return $this->desciption;}
+function getStatut(){return $this->statut;}
+function getDateDebut(){return $this->dateDebut;}
+function getDateFin(){return $this->dateFin;}
+function getDureeEstimee(){return $this->dureeEstimee;}
+function getValidation(){return $this->validation;}
+function getIdCreateur(){return $this->idCreateur;}
+function getIdUtilisateur(){return $this->idUtilisateur;}
+function getDureeReele(){return $this->dureeReele;}
 
-function setIdTache($tache){$this->$idtache=$tache}
-function setIdTache($projet){$this->$idprojet=$projet}
-function setIdTache($statut){$this->$statut=$statut}
-function setIdTache($createur){$this->$idcreateur=$createur}
-function setDescription($desc){$this->$desciption=$desc}
-function setDureeEstimee($due){$this->$dureeestimee=$due}
-function setDescription($dur){$this->$dureereele=$dur}
+function setId_tache($tache){$this->idTache=$tache;}
+function setNom($nom){$this->nom=$nom;}
+function setDesc($desc){$this->desciption=$desc;}
+function setEtat($statut){$this->statut=$statut;}
+function setDate_deb($dateDeb){$this->dateDebut=$dateDeb;}
+function setDate_fin($dateFin){$this->dateFin=$dateFin;}
+function setDureeEstimee($dateDeb, $dateFin){$this->dureeEstimee=$dateDeb-$dateFin;}
+function setId_createur($createur){$this->idcreateur=$createur;}
+function setId_utilisateur($utilisateur){$this->idUtilisateur=$utilisateur;}
+function setDureeReele($dur){$this->dureeReele=$dur;}
 
 public function dataToArray()
 	{
 
-		$data = array('idtache' => $this->idtache, 'idprojet' => $this->idprojet, 'statut' => $this->statut, 'idcreateur' => $this->idcreateur, 
-			'desciption' => $this->$desciption, 'dureeestimee' => $this->$dureeestimee, 'dureereele' => $this->$dureereele);
+		$data = array('id_tache' => $this->idTache, 'nom' => $this->nom, 'desc'=>$this->desciption, 'etat'=>$this->statut, 'date_deb'=>$this->dateDebut, 'date_fin'=>$this->dateFin,
+			'validation'=>$this->validation, 'id_createur'=>$this->idCreateur, 'id_utilisateur'=>$this->idUtilisateur);
 		
 		return $data;
 	}
@@ -63,5 +75,4 @@ private function hydrate(array $donnees)
 
 
 
-
->
+?>
