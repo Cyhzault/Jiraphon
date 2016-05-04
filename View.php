@@ -59,6 +59,9 @@ class View
     	<!-- Bootstrap Core CSS -->
         <link href='./bootstrap/css/bootstrap.min.css' rel='stylesheet'>
 
+        <!-- Bootstrap Core CSS -->
+        <link href='./bootstrap/css/bootstrap.css' rel='stylesheet'>
+
         <!-- Custom CSS -->
         <link href='./bootstrap/css/perso.css' rel='stylesheet'>
 

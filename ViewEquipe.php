@@ -16,32 +16,27 @@ class ViewEquipe extends View
     public function showProjectsList($projects)
     {
     	echo "
-    	<div class='tableau_proj'>
-    	<CENTER>
-    	<h2> Projets </h2>";
-    	$cmpt=0;
-    	$nb_colonne=3;
-    	$nb_ligne=ceil(sizeof($projects)/$nb_colonne);
-
+      <div class='tableau_proj'>
+        <CENTER>
+        <h2> Projets </h2>
+        <hr class='JiraphonBAR'>
+        <div class='row' style='width:100%'>
+              ";
+    
+      foreach($projects as $projet)
+      {
         echo "
-    	<TABLE width=70% border=0 class='table'>" ;
-    	for($i=0; $i<$nb_ligne; $i++)
-    	{
-    		echo "<TR>";
-			for($j=0; $j<$nb_colonne && $cmpt< sizeof($projects); $j++)
-			{
-				echo "<TD> <a class='list-group-item' href='#".$projects[$cmpt]->getId_projet()."'>".$projects[$cmpt]->getNom_projet()."</a></TD>";
-				$cmpt++;
-			}
-			
-			echo "</TR>";
-    	}
-		
-		echo "
-		</TABLE>
-		</CENTER>
-		</div>
-		<ul>";
+             <div class='col-md-4'>
+                 <a  class='thumbnail' href='#".$projet->getId_projet()."'>".$projet->getNom_projet()."</a>
+              </div>
+            ";
+      }
+   
+    echo "
+        </div>
+    </CENTER>
+    </div>
+    <ul>";
     }
 
     /**
@@ -53,27 +48,47 @@ class ViewEquipe extends View
     		echo "<div class='panel-heading'> Projet " . $projet->getNom_projet() . " </div>";	
     }
 
-    public function showChefProjet($user,$id)
+
+    public function showProjet($user,$projet,$id)
     {
     	echo "
-    	<CENTER>
-    	
-    	<div style='position: relative;'>
-    		<div style='width:20%'  onmousemove='Showinformations(".$id.")' onmouseout='Hideinformations(".$id. ")'>
-    			<img id='image".$id."' src=". $user->getPhoto() . " alt='Photo chef de projet' class='img-rounded' style='max-width:100%;'>
-    			<div class='informations_cp' id='".$id. "'>
-				<center>
-      				<ul>
-      					<li><p>" . $user->getNom() . "</p></li>
-      					<li><p>" . $user->getPrenom() . "</p></li>
-      					<li><p>" . $user->getFonction() . "</p></li>
-      				</ul>
-      			</center>
-    			</div>
-    		</div>
-	  	</div>
-      <h4> Chef de projet </h4>
-    	</CENTER>";
+    
+    	<div class='panel-body'>
+        <CENTER>
+
+        <div class='temps_projet'>
+          <div class='date_deb'>". $projet->getDate_deb() . "</div>
+          <div class='date_fin'>". $projet->getDate_fin() . "</div>
+          <img id='schema_temps' src='bootstrap/img/projet_duree.png' alt='schema temps' style='width:95%; margin-left:15px;' >
+        </div>
+
+        <div class='description'>
+          <p>" . $projet->getDescription() ."<p>
+        </div>
+
+      	<div style='position: relative;'>
+      		<div style='width:20%'  onmousemove='Showinformations(".$id.")' onmouseout='Hideinformations(".$id. ")'>
+      			<img id='image".$id."' src=". $user->getPhoto() . " alt='Photo chef de projet' class='img-rounded' style='max-width:100%;'>
+      			<div class='informations' name='cp' id='".$id. "'>
+  				    <center>
+        				<ul>
+        					<li><p>" . $user->getNom() . "</p></li>
+        					<li><p>" . $user->getPrenom() . "</p></li>
+        					<li><p>" . $user->getFonction() . "</p></li>
+        				</ul>
+        			</center>
+      			</div>
+      		</div>
+          <h4> Chef de projet </h4>
+  	  	</div>
+        </CENTER>
+
+        
+
+      </div>
+
+     
+";
     }
 
     public function ListeEquipe($etat)
@@ -106,7 +121,7 @@ class ViewEquipe extends View
   				<div style='width:100%' >
 	      			<center><img id='image".$id. "' src=". $membre->getPhoto() . " alt='Photo membre' class='img-rounded' style='max-width: 70%;' ></center>
 
-	      			<div id='". $id. "' class='informations_m'>
+	      			<div id='". $id. "' class='informations' name='membre'>
 	      				
 	      				<ul>
 	      					<li><p>" . $membre->getNom() . "</p></li>
@@ -129,7 +144,7 @@ class ViewEquipe extends View
 
 function Showinformations(id) 
 {
-    document.getElementById("image"+id).style.opacity = "0.4"; 
+    document.getElementById("image"+id).style.opacity = "0.2"; 
     document.getElementById(id).style.visibility= "visible";
 }
 

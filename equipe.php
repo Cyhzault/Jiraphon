@@ -1,6 +1,5 @@
 <?php
 	require_once("./Controler.php");
-	require_once("./ModelEquipe.php");
 	require_once("./ModelProject.php");
 	require_once("./ViewEquipe.php");
 
@@ -24,10 +23,10 @@
 		$view->ListeProjet(true,$projet);
 		$view->showNomProject($projet);
 
-		//Affichage chef projet
+		//Affichage info projet / chef projet
 		$user = $modelpro->getUtilisateurById($projet->getCommanditaire());
 		$id=$projet->getId_projet().$user->getId_utilisateur();
-		$view->showChefProjet($user,$id);
+		$view->showProjet($user,$projet,$id);
 
 		//Affichage equipe
 		$equipes= $modelpro->getAllTeamInProject($projet->getId_projet());
@@ -39,7 +38,7 @@
 		}
 
 		//Affichage utilisateur in projet (qui n'appartiennent pas à une équipe)
-
+		
 		// Fin balise projet et equipe
 		$view->ListeEquipe(false);
 		$view->ListeProjet(false,$projet);
