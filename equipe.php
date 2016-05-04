@@ -1,6 +1,5 @@
 <?php
 	require_once("./Controler.php");
-	require_once("./ModelEquipe.php");
 	require_once("./ModelProject.php");
 	require_once("./ViewEquipe.php");
 
@@ -39,7 +38,7 @@
 		}
 
 		//Affichage utilisateur in projet (qui n'appartiennent pas à une équipe)
-
+		
 		// Fin balise projet et equipe
 		$view->ListeEquipe(false);
 		$view->ListeProjet(false,$projet);
