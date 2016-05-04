@@ -82,7 +82,7 @@ class TaskManager
     }
 
 
-public function getTasksDone($userId, $projectId)
+    public function getTasksDone($userId, $projectId)
     {
         $userId = (string) $userId;
         $projectId= (string) $projectId;
@@ -102,6 +102,13 @@ public function getTasksDone($userId, $projectId)
         return $list;
     }
 
-
+    public function addTask($data)
+    {
+        $sql ="INSERT INTO tache ('duree_est', 'description' )VALUES (:duree, :descr)";
+        $req = $this->db->prepare($sql);
+        $req->bindParam(':descr', $data['description'], PDO::PARAM_STR);
+        $req->bindParam(':duree', $data['duree_est'], PDO::PARAM_STR);
+        $req->execute();
+    }
 
 }

@@ -15,6 +15,7 @@ class User
 	private $nom;
 	private $prenom;
 	private $photo;
+	private $fonction;
 
 	function __construct($data)
 	{
@@ -29,6 +30,7 @@ class User
 	public function getNom(){return $this->nom;}
 	public function getPrenom(){return $this->prenom;}
 	public function getPhoto(){return $this->photo;}
+	public function getFonction(){return $this->fonction;}
 
 
 	private function setId_utilisateur($id_utilisateur){$this->id_utilisateur=$id_utilisateur;}
@@ -39,12 +41,13 @@ class User
 	private function setNom($nom){$this->nom = $nom;}
 	private function setPrenom($prenom){$this->prenom = $prenom;}
 	private function setPhoto($photo){$this->photo= $photo;}
+	private function setFonction($fonc){$this->fonction=$fonc;}
 
 
 	public function dataToArray()
 	{
 
-		$data = array('id_utilisateur' => $this->id_utilisateur, 'pseudo' => $this->pseudo, 'mdp' => $this->mdp, 'fonction' => $this->fonction, 'statut' => $this->statut, 'nom' => $this->nom, 'prenom' => $this->prenom, 'photo' => $this->photo);
+		$data = array('id_utilisateur' => $this->id_utilisateur, 'pseudo' => $this->pseudo, 'mdp' => $this->mdp, 'fonction' => $this->fonction, 'statut' => $this->statut, 'nom' => $this->nom, 'prenom' => $this->prenom, 'photo' => $this->photo,'fonction'=>$this->fonction);
 		
 		return $data;
 	}
