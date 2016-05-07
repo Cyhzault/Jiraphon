@@ -82,13 +82,7 @@ class ViewEquipe extends View
           <h4> Chef de projet </h4>
   	  	</div>
         </CENTER>
-
-        
-
-      </div>
-
-     
-";
+      </div>";
     }
 
     public function ListeEquipe($etat)
@@ -107,35 +101,58 @@ class ViewEquipe extends View
     		echo"</div></li>";
     }
 
+     public function showPicture($id,$membre)
+    {
+      $id= $id. $membre->getId_utilisateur();
+        echo "
+        <div class='equipe' onmousemove='Showinformations(".$id.")' onmouseout='Hideinformations(".$id.")'>
+          <div style='width:100%' >
+              <center><img id='image".$id. "' src=". $membre->getPhoto() . " alt='Photo membre' class='img-rounded' style='max-width: 70%;' ></center>
+
+              <div id='". $id. "' class='informations' name='membre'>
+                
+                <ul>
+                  <li><p>" . $membre->getNom() . "</p></li>
+                  <li><p>" . $membre->getPrenom() . "</p></li>
+                  <li><p>" . $membre->getFonction() . "</p></li>
+                </ul>
+                
+              </div>
+          </div>
+        </div>";
+    }
+
 
     public function showEquipe($equipe,$compteur,$id)
     {
     	echo "
-  		<li style='clear:left;' class='list-group-item'><h3> Equipe ".$compteur.": ". $equipe->getNom_equipe() . "</h3>";
+  		<li style='clear:left;' class='list-group-item'>
+      <h3> Equipe ".$compteur.": ". $equipe->getNom_equipe() . "</h3>";
+
+      if($equipe->getSpecialite() != null)
+        echo "<div class='spec'> Spécialité : " .$equipe->getSpecialite(). "</div>";
 
   		foreach($equipe->getUtilisateurs() as $membre)
   		{
-        $id= $id. $membre->getId_utilisateur();
-  			echo "
-  			<div class='equipe' onmousemove='Showinformations(".$id.")' onmouseout='Hideinformations(".$id.")'>
-  				<div style='width:100%' >
-	      			<center><img id='image".$id. "' src=". $membre->getPhoto() . " alt='Photo membre' class='img-rounded' style='max-width: 70%;' ></center>
-
-	      			<div id='". $id. "' class='informations' name='membre'>
-	      				
-	      				<ul>
-	      					<li><p>" . $membre->getNom() . "</p></li>
-	      					<li><p>" . $membre->getPrenom() . "</p></li>
-	      					<li><p>" . $membre->getFonction() . "</p></li>
-	      				</ul>
-	      				
-	  			 	</div>
-	  			 </div>
-			</div>";
-  		}
-  		echo "<div class='spacer' style='clear: both;''></div></li>";
+        $this->showPicture($id,$membre);
+  	  }
+  	  echo "<div class='spacer' style='clear: both;''></div></li>";
+      
     }
 
+    public function showUsers($users,$id)
+    {
+      echo "
+      <li style='clear:left;' class='list-group-item'>
+      <h3> Autres membres </h3>";
+      foreach($users as $membre)
+      {
+        $this->showPicture($id,$membre);
+      }
+      echo "<div class='spacer' style='clear: both;''></div></li>";
+    }
+
+ 
 }
 
 ?>

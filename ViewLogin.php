@@ -84,11 +84,11 @@ class ViewLogin extends View
 					</div>
 					<div class='champ_ins'>
 						<label>Mot de passe * : </label>
-						<input type='password' name='pswd_i' class='form-control' placeholder='Votre mot de passe' onblur='verifMdp(this)' data-toggle='tooltip' data-placement='right'>
+						<input type='password' name='pswd_i' id='pswd_ins' class='form-control' placeholder='Votre mot de passe' onblur='VerifMdp(this)' data-toggle='tooltip' data-placement='right'>
 					</div>
 					<div class='champ_ins'>
 						<label>Verification mot de passe * : </label>
-						<input type='password' name='pswd_verif' class='form-control' placeholder='Veuillez retaper votre mot de passe'>
+						<input type='password' name='pswd_verif' id='pswd_v' class='form-control' placeholder='Veuillez retaper votre mot de passe'  onblur='MdpIdentique(this)' data-toggle='tooltip' data-placement='right'>
 					</div>
 					<div class='champ_ins'>
 						<label>Fonction * : </label>
@@ -115,57 +115,78 @@ class ViewLogin extends View
 <script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js'></script>
 <script type="text/javascript">
 
+function VerifMdp(champ)
+{
+	if(document.getElementById('pswd_v').value != '')
+		MdpIdentique(document.getElementById('pswd_v'));
 
-	function verifMdp(champ)
+	$('[name="pswd_i"]').tooltip("destroy");
+
+	//vérification taille du mdp
+	if (champ.value.length < 8)
 	{
-		erreur=false;
-		alert($('[data-toggle="tooltip"]').title);
-		//vérification taille du mdp
-		if (champ.value.length < 8)
+		if(!$('[name="pswd_i"]').title)
 		{
-			if(!$('[data-toggle="tooltip"]').title)
+			$('[name="pswd_i"]').tooltip({
+    		title: 'Votre mot de passe doit contenir au moins 8 caractères',
+    		trigger: 'hover'
+			});
+		}
+		ShowError(champ,true,$('[name="pswd_i"]'));
+	}
+	else
+	{
+		//vérification contenance mdp
+		if (!(/\W/.test(champ.value) && /\d/.test(champ.value)))
+		{
+
+			if(!$('[name="pswd_i"]').title)
 			{
-				$('[data-toggle="tooltip"]').tooltip({
-	    		title: 'Votre mot de passe doit contenir au moins 8 caractères'
-				});
-			}
-			erreur=true;
+				$('[name="pswd_i"]').tooltip({
+	    		title: 'Votre mot de passe doit contenir au moins un chiffre et un caractère spécial',
+	    		trigger: 'hover'
+				});	
+			}	
+			ShowError(champ,true,$('[name="pswd_i"]'));
 		}
 		else
 		{
-			$('[data-toggle="tooltip"]').tooltip("destroy");
+			ShowError(champ,false,$('[name="pswd_i"]'));
+		}	
+	}
+}
 
-			//vérification contenance mdp
-			if (!(/\W/.test(champ.value) && /\d/.test(champ.value)))
-			{
-				if(!$('[data-toggle="tooltip"]').title)
-				{
-					
-					$('[data-toggle="tooltip"]').tooltip({
-		    		title: 'Votre mot de passe doit contenir au moins un chiffre et un caractère spécial'
-					});
 
-					
-				}	
-				erreur=true;
-			}
-			else
-				$('[data-toggle="tooltip"]').tooltip("destroy");
-		}
 
-			
+function MdpIdentique(champ)
+{
+	if(!(champ.value==document.getElementById('pswd_ins').value))
+	{
+		$('[name="pswd_verif"]').tooltip({
+	    		title: 'Les deux mots de passe doivent être identiques',
+	    		trigger: 'hover'
+		});	
+
+		ShowError(champ,true,$('[name="pswd_verif"]'));
+	}
+	else
+		ShowError(champ,false,$('[name="pswd_verif"]'));
+}
+
+function ShowError(champ,erreur,input)
+{
 
 	   if(erreur)
 	   {
 	   		champ.style.backgroundColor = "#FA2A3F";
-	     	$('[data-toggle="tooltip"]').tooltip("show");
+	   		input.tooltip("show");
 	   }
 	   else
 	   {
 	   		champ.style.backgroundColor = "";
-	   		
+	   		input.tooltip("destroy");
 	   }
-	}
+}
 
 </script>
 

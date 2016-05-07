@@ -57,9 +57,8 @@ class ModelProject extends Model
 
         $pseudo = (string) $pseudo;
         $liste = array();
-
-        //Si l'utilisateur n'appartient pas à une équipe
-        $sql = "SELECT projet.id_projet,projet.nom_projet, projet.date_deb, projet.date_fin, projet.description, projet.commanditaire FROM projet NATURAL JOIN utilisateur_in_projet NATURAL JOIN utilisateur WHERE utilisateur.nom = :pseudo";
+        
+        $sql = "SELECT projet.id_projet,projet.nom_projet, projet.date_deb, projet.date_fin, projet.description, projet.id_chef FROM projet NATURAL JOIN utilisateur_in_projet NATURAL JOIN utilisateur WHERE utilisateur.nom = :pseudo";
         $req = $this->db->prepare($sql);
         $req->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
         $req->execute();
@@ -68,17 +67,6 @@ class ModelProject extends Model
         while($data = $req->fetch(PDO::FETCH_ASSOC)){
             $liste[$i]= new Project($data);
             $i = $i +1;
-        }
-
-        //Si l'utilisateur appartient à une équipe
-        $sql = "SELECT projet.id_projet,projet.nom_projet, projet.date_deb, projet.date_fin, projet.description, projet.commanditaire FROM projet NATURAL JOIN equipe_in_projet NATURAL JOIN membre_equipe NATURAL JOIN utilisateur WHERE utilisateur.nom = :pseudo";
-        $req = $this->db->prepare($sql);
-        $req->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
-        $req->execute();
-
-         while($data = $req->fetch(PDO::FETCH_ASSOC)){
-            $liste[$i]= new Project($data);
-             $i = $i +1;
         }
 
         $req->closeCursor();
@@ -123,6 +111,34 @@ class ModelProject extends Model
         }
         $req->closeCursor();
         return $liste;
+    }
+
+    /**
+     * @param $projectId du projet, $id_chef du chef de projet
+     * @return Un array d'utilisateur qui n'appartiennent pas à une équipe
+     * @see Project
+     *
+     */
+    public function getUsersSoloInProject($projectId,$id_chef)
+    {
+        $i=0;
+        $liste = array();
+
+        $sql = "SELECT u.id_utilisateur,u.nom,u.prenom,u.fonction,u.statut,u.photo,u.login,u.mdp FROM utilisateur u NATURAL JOIN utilisateur_in_projet WHERE id_projet =:projectId AND id_utilisateur <> :id_chef
+                EXCEPT 
+                SELECT u.id_utilisateur,u.nom,u.prenom,u.fonction,u.statut,u.photo,u.login,u.mdp FROM utilisateur u NATURAL JOIN membre_equipe NATURAL JOIN equipe NATURAL JOIN equipe_in_projet WHERE id_projet =:projectId";
+        $req = $this->db->prepare($sql);
+        $req->bindParam(':projectId', $projectId, PDO::PARAM_INT);
+        $req->bindParam(':id_chef', $id_chef, PDO::PARAM_INT);
+        $req->execute();
+
+        while($data = $req->fetch(PDO::FETCH_ASSOC)){
+            $liste[$i]= new User($data);
+            $i = $i +1;
+        }
+
+        return $liste;
+
     }
 
     public function getAllSprintByProjectId($projectId)

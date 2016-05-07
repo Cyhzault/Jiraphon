@@ -4,7 +4,6 @@
 	require_once("./ViewEquipe.php");
 
 	$ctrl = new Controler();
-	$model = new ModelEquipe();
 	$modelpro = new ModelProject();
 	$view = new ViewEquipe();
 	$ctrl->beginPage("Equipes","Apperçu des equipes");
@@ -24,7 +23,7 @@
 		$view->showNomProject($projet);
 
 		//Affichage info projet / chef projet
-		$user = $modelpro->getUtilisateurById($projet->getCommanditaire());
+		$user = $modelpro->getUtilisateurById($projet->getId_chef());
 		$id=$projet->getId_projet().$user->getId_utilisateur();
 		$view->showProjet($user,$projet,$id);
 
@@ -37,8 +36,11 @@
 			$view->showEquipe($equipe,$cmpt,$id);
 		}
 
-		//Affichage utilisateur in projet (qui n'appartiennent pas à une équipe)
-		
+		//Affichage utilisateurs qui n'appartiennent pas à une équipe
+		$users=$modelpro->getUsersSoloInProject($projet->getId_projet(),$projet->getId_chef());
+		if($users != null)
+			$view->showUsers($users,$id);
+
 		// Fin balise projet et equipe
 		$view->ListeEquipe(false);
 		$view->ListeProjet(false,$projet);
