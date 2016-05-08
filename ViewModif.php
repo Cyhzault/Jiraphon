@@ -53,14 +53,14 @@ class ViewModif extends ViewLogin
 		";
 	}
 
-	function ShowChangePicture($valphot)
+	function ShowChangePicture()
 	{	
 		echo"
 			<h2>Modification photo de profil</h2>
 			<form action='' method='POST' enctype='multipart/form-data' >
 				<div class='form-group'>
 					<label>Photo : </label>
-						<input name='photo' id='photo' type='file' class='form-control' placeholder='Choisissez votre photo' value='$valphot'>
+						<input name='photo' id='photo' type='file' class='form-control' placeholder='Choisissez votre photo'>
 					</div>
 					<button id='photo_button' class='btn btn-primary' type='submit' style='float:right; margin:5px'>Confirmer</button>
 				</div>

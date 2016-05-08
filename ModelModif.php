@@ -3,8 +3,8 @@
 /**
 * 
 */
-require_once("./Model.php");
-class ModelModif extends Model
+require_once("../Jiraphon/ModelLogin.php");
+class ModelModif extends ModelLogin
 {
 	function verifOldMdp($pseudo, $mdp)
 	{
@@ -34,7 +34,7 @@ class ModelModif extends Model
 		//Vérification que les deux pswd entrés sont identiques
 		if(strcmp($mdp,$newMdp)==0)
 		{
-			$sql="UPDATE utilisateur SET mdp=:newMdp FROM utilisateur WHERE login=:pseudo AND mdp=:mdp ";
+			$sql="UPDATE utilisateur SET mdp=:newMdp WHERE login=:pseudo AND mdp=:mdp ";
 			$req=$this->$db->prepare($sql);
 			$req->bindParam(':newMdp',$newMdp,':pseudo', $pseudo, ':mdp', $mdp);
 			$req->execute();
@@ -42,10 +42,7 @@ class ModelModif extends Model
 	//si on a bien récup l'utilisateur
 			if($data = $req->fetch(PDO::FETCH_ASSOC))
 			{
-				if(password_verify($pswd,Trim($data['mdp'])))
-				{
-					return true;		
-				}	
+				return true;		
 			}	
 		}
 		return false;
@@ -56,6 +53,17 @@ class ModelModif extends Model
 	function changePhoto($pseudo, $photo)
 	{
 		$pseudo = htmlspecialchars($pseudo);
+
+		$sql="UPDATE utilisateur SET photo=:photo WHERE login=:pseudo";
+		$req=$this->db->prepare($sql);
+		$req->bindParam(':photo', $photo, ':pseudo', $pseudo);
+		$req->execute();
+
+		if($data = $req->fetch(PDO::FETCH_ASSOC))
+		{
+			return true;		
+		}	
+		return false;
 	}
 }
 

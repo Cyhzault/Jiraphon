@@ -67,6 +67,7 @@ else
 		//demande changement éffectuée
 		if (isset($_POST['photo']))
 		{
+			//cas mauvais format
 			if(!$model->verif_image($_POST['photo'])){}
 			else
 			{
@@ -80,7 +81,7 @@ else
 				}
 			}
 		}
-		$view->ShowChangePicture($phot);
+		$view->ShowChangePicture();
 		
 	}
 	$view->endDiv();
