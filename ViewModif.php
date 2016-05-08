@@ -7,6 +7,27 @@
 require_once("../Jiraphon/ViewLogin.php");
 class ViewModif extends ViewLogin
 {
+	function ShowModifSuccess()
+	{
+		echo"
+			<div class='alert alert-success'>Modification effectuée avec succés.</div>
+		";
+	}
+
+	function ShowErrorMdp()
+	{
+		echo"
+			<div class='alert alert-danger'>Erreur dans la saisie de votre mot de passe</div>
+		";
+	}
+
+	function ShowModifFailed()
+	{
+		echo"
+			<div class='alert alert-danger'>Votre modification n'a pas pu être prise en compte</div>
+		";
+	}
+
 	function ShowChangePassword($valmdp)
 	{
 		echo"

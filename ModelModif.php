@@ -6,61 +6,56 @@
 require_once("./Model.php");
 class ModelModif extends Model
 {
-	function verifmdp($pseudo, $mdp)
+	function verifOldMdp($pseudo, $mdp)
 	{
 
 		$pseudo = htmlspecialchars($pseudo);
 		$mdp = htmlspecialchars($mdp);
 
 		$sql="SELECT mdp FROM utilisateur WHERE login=:pseudo";
-		$req=$this->$db->prepare($sql);
+		$req=$this->db->prepare($sql);
 		$req->bindParam(':pseudo', $pseudo);
 		$req->execute();
 
 		if($data = $req->fetch(PDO::FETCH_ASSOC))
 		{
-			if(password_verify($pswd,Trim($data['mdp'])))
+			if(password_verify(Trim($mdp),Trim($data['mdp'])))
 			{
-				$_SESSION['id']= md5(rand());
-				$_SESSION['pseudo']=$_POST['pseudo'];
 				return true;		
 			}
-
-			else
-				return false;	
 		}
-		else
-		{
 			return false;
-		}
 	}
 
-	function changemdp($pseudo, $newMdp, $mdp)
+	function changeMdp($pseudo, $newMdp, $mdp)
+	{
+		$mdp = htmlspecialchars($mdp);
+		$newMdp = htmlspecialchars($newMdp);
+		//Vérification que les deux pswd entrés sont identiques
+		if(strcmp($mdp,$newMdp)==0)
+		{
+			$sql="UPDATE utilisateur SET mdp=:newMdp FROM utilisateur WHERE login=:pseudo AND mdp=:mdp ";
+			$req=$this->$db->prepare($sql);
+			$req->bindParam(':newMdp',$newMdp,':pseudo', $pseudo, ':mdp', $mdp);
+			$req->execute();
+
+	//si on a bien récup l'utilisateur
+			if($data = $req->fetch(PDO::FETCH_ASSOC))
+			{
+				if(password_verify($pswd,Trim($data['mdp'])))
+				{
+					return true;		
+				}	
+			}	
+		}
+		return false;
+	}
+
+
+//TODO
+	function changePhoto($pseudo, $photo)
 	{
 		$pseudo = htmlspecialchars($pseudo);
-		$mdp = htmlspecialchars($newMdp);
-
-		$sql="UPDATE utilisateur SET mdp=:newMdp FROM utilisateur WHERE login=:pseudo AND mdp=:mdp ";
-		$req=$this->$db->prepare($sql);
-		$req->bindParam(':newMdp',$newMdp,':pseudo', $pseudo, ':mdp', $mdp);
-		$req->execute();
-
-		if($data = $req->fetch(PDO::FETCH_ASSOC))
-		{
-			if(password_verify($pswd,Trim($data['mdp'])))
-			{
-				$_SESSION['id']= md5(rand());
-				$_SESSION['pseudo']=$_POST['pseudo'];
-				return true;		
-			}
-
-			else
-				return false;	
-		}
-		else
-		{
-			return false;
-		}
 	}
 }
 
