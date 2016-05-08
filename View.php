@@ -128,12 +128,14 @@ class View
                 <li role='separator' class='divider'></li>
                 <li><a href='#'>Nouveau Projet</a></li>
               </ul>
-            </li>
+          </li>
 
             <!-- menu equipe -->
-            <li class='dropdown'>
-              <a href='equipe.php' >Equipe </a>
-              
+            <li>
+              <a href='equipe.php' style='white-space:nowrap;'>Equipe </a>
+            </li>
+            <li>
+              <a href='equipe.php?creation=5'> Creation equipe </a>
               </ul>
             </li>
           </ul>

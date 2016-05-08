@@ -141,9 +141,9 @@ class ModelProject extends Model
 
     }
 
-    public function getAllSprintByProjectId($projectId)
+    public function creationEquipe()
     {
-        return null;
+        echo 'ok';
     }
 
 }

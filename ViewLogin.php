@@ -69,32 +69,32 @@ class ViewLogin extends View
 	{
 		echo"
 			<form action='' method='POST' enctype='multipart/form-data' >
-				<div class='form-group' id='inscription_form'>
-					<div class='champ_ins'>
+				<div class='form-group' id='inscription_form' name='formulaire'>
+					<div class='champ'>
 						<label>Nom * : </label>
 						<input type='text' name='nom' class='form-control' placeholder='Votre nom' value='$array[1]'>
 					</div>
-					<div class='champ_ins'>
+					<div class='champ'>
 						<label>Prenom * : </label>
 						<input type='text' name='prenom' class='form-control' placeholder='Votre prenom' value='$array[2]'>
 					</div>
-					<div class='champ_ins'>
+					<div class='champ'>
 						<label>Pseudo * : </label>
 						<input type='text' name='pseudo_i' class='form-control' placeholder='Entrez votre pseudo' value='$array[3]'>
 					</div>
-					<div class='champ_ins'>
+					<div class='champ'>
 						<label>Mot de passe * : </label>
 						<input type='password' name='pswd_i' id='pswd_ins' class='form-control' placeholder='Votre mot de passe' onblur='VerifMdp(this)' data-toggle='tooltip' data-placement='right'>
 					</div>
-					<div class='champ_ins'>
+					<div class='champ'>
 						<label>Verification mot de passe * : </label>
 						<input type='password' name='pswd_verif' id='pswd_v' class='form-control' placeholder='Veuillez retaper votre mot de passe'  onblur='MdpIdentique(this)' data-toggle='tooltip' data-placement='right'>
 					</div>
-					<div class='champ_ins'>
+					<div class='champ'>
 						<label>Fonction * : </label>
 						<input type='text' name='fonction' class='form-control' placeholder='Votre fonction' value='$array[4]'/>
 					</div>
-					<div class='champ_ins'>
+					<div class='champ'>
 						<label>Photo : </label>
 						<input name='photo' id='photo' type='file' class='form-control' placeholder='Votre photo'/>
 					</div>
