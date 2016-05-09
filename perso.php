@@ -1,23 +1,22 @@
 
 <?php
 
-/*
+/**
 *@author Niark
 */
 
-
 	require_once("./Controler.php");
-	require_once(/*"./ViewPerso.php"*/"/view.php");
+	require_once("./ViewPerso.php");
 	require_once("./Model.php");
 
 	$controler=new Controler();
-	$view= new View()/*ViewPerso()*/ ;
+	$view= new ViewPerso();
 	$model= new Model();
 
 	$title="Page perso";
 
 
-	$controler->beginPage("Perso","Page perso");
+	$controler->beginPage("Perso",$title);
 
 //page accessible uniquement si déjà connecté
 if (!isset($_SESSION['pseudo'])){
@@ -31,17 +30,18 @@ else{
 	$user= $um->getUserByPseudo($_SESSION['pseudo']);
 	//chemin par défaut déjà dans la base de données
 
-	$str=$user->getPrenom()." ".$user->getNom();
-	$str.=$user->getFonction();
+	$prenom=$user->getPrenom();
+	$nom=$user->getNom();
+	$pseudo=$user->getLogin();
+	$fonction=$user->getFonction();
+	$photo=$user->getPhoto();
 
-	$str.="<a href='' ><img src='".$user->getphoto()."' alt='photo de profil'></a>
-
-	<a href=''>Mon equipe</a>
-	<a href='project.php'>Mes projets</a>
-	<a href='creationProject.php'>Creer projet</a>
-	<a href=''>Archives</a>";
-
-	echo $str;
+	$view->beginContainer();
+	$view->ShowInfoPerso($prenom, $nom, $pseudo, $fonction, "./photo/inconnu.png");
+	$view->ShowLienPerso();
+	$view->endDiv();
 }
+
+$controler->endPage($view);
 
 ?>

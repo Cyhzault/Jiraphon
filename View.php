@@ -67,6 +67,9 @@ class View
 
         <!-- Custom Fonts -->
         <link href='./bootstrap/font-awesome/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+
+        <!-- Css equipe -->
+        <link href='./bootstrap/css/equipe.css' rel='stylesheet'>
 		";
 
     }
@@ -145,7 +148,7 @@ class View
             <li class='dropdown'>
               <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>".$_SESSION['pseudo']."<span class='caret'></span></a>
               <ul class='dropdown-menu'>
-                <li><a href='#'>Perso</a></li>
+                <li><a href='perso.php'>Perso</a></li>
                 <li><a href='./index.php?d=5'>Deconnection</a></li>
               </ul>
             </li>

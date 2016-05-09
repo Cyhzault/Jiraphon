@@ -16,8 +16,18 @@
 		$ctrl->beginPage("Equipes","Création d'équipe");
 		$view->beginContainer();
 		$view->showBar();
-
-		$view->showEquipeFormulary();
+		
+		if(isset($_POST['nom_e']) && isset($_POST['spec']) && isset($_POST['liste_membre']))
+		{
+			$err=$modelpro->creationEquipe($_POST['nom_e'],$_POST['spec'],$_POST['liste_membre']);
+			if(empty($err))
+				$view->showCreationSuccess();
+			else
+				$view->showCreationFailed($err);
+			
+		}
+		else
+			$view->showEquipeFormulary();
 	}
 	else
 	{
@@ -54,10 +64,6 @@
 			if($users != null)
 				$view->showUsers($users,$id);
 
-			if(isset($_POST['uti_form']))
-			{
-				echo "ok";
-			}
 
 			// Fin balise projet et equipe
 			$view->ListeEquipe(false);
@@ -65,7 +71,8 @@
 		}
 	}
 
-	
+	$view->endDiv();
+	$ctrl->endPage($view);
 	
 
 ?>

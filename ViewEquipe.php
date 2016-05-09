@@ -4,7 +4,6 @@
  * Author: Ambre
  */
 require_once('./View.php');
-echo " <link href='./bootstrap/css/equipe.css' rel='stylesheet'>";
 
 class ViewEquipe extends View
 {
@@ -122,6 +121,27 @@ class ViewEquipe extends View
         </div>";
     }
 
+    public function showPictureHtml($id,$membre)
+    {
+       $id= $id. $membre->getId_utilisateur();
+        return "
+        <div class='equipe' onmousemove='Showinformations(".$id.")' onmouseout='Hideinformations(".$id.")'>
+          <div style='width:100%' >
+              <center><img id='image".$id. "' src=". $membre->getPhoto() . " alt='Photo membre' class='img-rounded' style='max-width: 70%;' ></center>
+
+              <div id='". $id. "' class='informations' name='membre'>
+                
+                <ul>
+                  <li><p>" . $membre->getNom() . "</p></li>
+                  <li><p>" . $membre->getPrenom() . "</p></li>
+                  <li><p>" . $membre->getFonction() . "</p></li>
+                </ul>
+                
+              </div>
+          </div>
+        </div>";
+    }
+
 
     public function showEquipe($equipe,$compteur,$id)
     {
@@ -160,145 +180,65 @@ class ViewEquipe extends View
         <div class='form-group' id='equipe_form' name='formulaire'>
           <div class='champ'>
             <label>Nom d'équipe * : </label>
-            <input type='text' id='nom_e' class='form-control' >
+            <input type='text' id='nom_e' name='nom_e' class='form-control' >
           </div>
           <div class='champ'>
             <label>Spécialité de l'équipe : </label>
-            <input type='text' id='spec' class='form-control' >
+            <input type='text' id='spec' name='spec' class='form-control' >
           </div>
 
-           <div id='membres' class='row' style='width:100%'>
+          <div id='membres' class='row' style='width:100%'>
            <label> Membres </label>
-           </div>
+          </div>
 
           <img src='./bootstrap/img/plus.png' id='plus' alt='Plus ajout' height='35' width='35' onclick='AjoutUtilisateur()'>
-          <figcaption> Ajouter un membre </figcaption>
-
+          <p id='legende'> Ajouter un membre </p>
         </div>
-          <div class='form-group' id='utilisateur_form' name='formulaire'>
-              <div class='champ' id='nom_uti' name='champ_uti'>
-                <label>Nom utilisateur: </label>
-                <input type='text' id='nom_u' class='form-control' onblur='ValidationNom()' >
-              </div>
-              <div class='champ' name='champ_uti'>
-                <label> Prénom utilisateur : </label>
-                <select class='form-control' id='prenom_u' size='1'>
-                  <option> -- </option>
-                </select>
-              </div>
-            <input type='button' class='btn btn-primary' onclick='ValidUti()' value='Valider'>
-          </div>
 
-        
+        <div class='form-group' id='utilisateur_form' name='formulaire'>
+          <div class='champ' id='nom_uti' name='champ_uti'>
+            <label>Nom utilisateur: </label>
+            <input type='text' id='nom_u' class='form-control' onblur='ValidationNom()' >
+          </div>
+          <div class='champ' name='champ_uti'>
+            <label> Prénom utilisateur : </label>
+            <select class='form-control' id='prenom_u' size='1'>
+            </select>
+          </div>
+          <input type='hidden' name='liste_membre'> </input>
+          <input type='button' class='btn btn-primary' onclick='ValidUti()' value='Valider'>
+        </div>
+
+      <center><button id='crea_button' class='btn btn-primary' type='submit' value='création_eq'>Créer l'équipe</button></center>
       </form>";
     }
 
- 
-}
+  public function showCreationFailed($erreur)
+  {
+    echo"
+    <div class='alert alert-danger'> $erreur </div>
+    ";
+  }
 
+  public function showCreationSuccess()
+  {
+    echo"
+    <div class='alert alert-success'>Création d'équipe <strong>réussie</strong></div>
+    ";
+  }
 
-?>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>        
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>‌​
-<script type="text/javascript">
-
-$(document).ready(function() {
-    $('#nom_u').autocomplete({
-       source: function(request, response) {
-       $.getJSON("req_equipe.php", { equipe: true, term: request.term }, 
-              response);
-        },
-       messages: {
-        noResults: '',
-        results: function() {}
-      }
-    });
-});
-
-function ValidUti()
-{
-  console.log('ok');
-  $.ajax({
-    url : 'req_equipe.php',
-    data: { "nom": $('#nom_u').val(),
-            "prenom": $('#prenom_u').val()},
-            
-    dataType : "json", 
-    success : function(data)
+  public function addScript()
     {
-      console.log(data);
-      if(data!='')
-      {
-        if(document.getElementById('membres').style.display='none')
-            document.getElementById('membres').style.display='block';
 
-        Div = document.createElement("div");
-        Div.className += 'col-md-4';
-        document.getElementById('membres').appendChild(Div);
+        echo"
+            <script type='text/javascript' src='./bootstrap/js/jquery.js'></script>
+            <script type='text/javascript' src='./bootstrap/js/bootstrap.min.js'></script>       
+            <script src='./bootstrap/js/jquery-ui.min.js'></script>‌​
+            <script type='text/javascript' src='./bootstrap/js/equipe.js'></script>
+        ";        
 
-
-
-      }
     }
-  });
 }
 
-function ValidationNom()
-{
-  //Récupération des données
-  $.ajax({
-    url : 'req_equipe.php',
-    data: {term: $('#nom_u').val()},
-    dataType : "json", 
-    success : function(data)
-    {
-      for(var i in data)
-      {
-        var select = document.getElementById("prenom_u");
-        select.options[select.options.length] = new Option (data[i], data[i]);
-      } 
-    }
-  });
-}
-
-function AjoutUtilisateur()
-{
-    document.getElementById('utilisateur_form').style.display='block';
-}
-
-function Showinformations(id) 
-{
-    document.getElementById("image"+id).style.opacity = "0.2"; 
-    document.getElementById(id).style.visibility= "visible";
-}
-
-function Hideinformations(id)
-{
-  document.getElementById("image"+id).style.opacity =  "1";
-  document.getElementById(id).style.visibility= "hidden";
-  
-}
-
-</script>
-
-<?php
-/*
- source: function( request, response ) {
-        $.ajax({
-            dataType: "json",
-            type : 'POST',
-            url: 'test.php',
-            data:  {
-              fonction: 'test1',
-              var1: $('#nom_u').val()
-            },
-            success: function(data) {}
-          })
-        },
-        messages: {
-        noResults: '',
-        results: function() {}
-      }
-*/
 
 ?>

@@ -1,8 +1,11 @@
 <?php
-
-require_once ('./Model.php');
+require_once('./ViewEquipe.php');
+require_once ('./ModelProject.php');
 require_once ('./User.Class.php');
-$model = new Model();
+
+$model = new ModelProject();
+$view = new ViewEquipe();
+
 $db=$model->getDb();
 
 //$equipe= $_GET['equipe'];
@@ -38,12 +41,15 @@ else
 		$req->bindParam(':nom', $nom, PDO::PARAM_STR);
 		$req->bindParam(':prenom', $prenom, PDO::PARAM_STR);
 		$req->execute();
-
 		if($data = $req->fetch(PDO::FETCH_ASSOC))
-			echo json_encode(new User($data));
+		{
+			$membre = $model->getUtilisateurById($data['id_utilisateur']);
+			$id=$membre->getId_utilisateur();
+			$data['html']=$view->showPictureHtml($id,$membre);
+			echo json_encode($data);
+		}
 		else
 			echo json_encode('');
-
 	}
 
 	else

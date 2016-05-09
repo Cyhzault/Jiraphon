@@ -141,10 +141,77 @@ class ModelProject extends Model
 
     }
 
-    public function creationEquipe()
+    public function creationEquipe($nom,$spec,$liste_membre)
     {
-        echo 'ok';
+        $membre_array=array();
+        $nom = htmlspecialchars($nom);
+        $spec = htmlspecialchars($spec);
+        $membre_array=explode(',',$liste_membre);
+        $err="";
+        var_dump($membre_array);
+
+        if(empty($nom))
+        {
+            $err="Vous devez entrer un nom d'équipe";
+        }
+        else
+        {
+              //Vérification equipe pas déjà présente dans base 
+            $sql = "SELECT nom_equipe FROM equipe WHERE nom_equipe=:nom";
+            $req = $this->db->prepare($sql);
+            $req->bindParam(':nom', $nom, PDO::PARAM_STR);
+            $req->execute();
+
+            if($data = $req->fetch(PDO::FETCH_ASSOC))
+            {
+                $err="Il existe déjà une equipe portant le nom : " . $nom;
+            }
+            else
+            {
+                $sql = "INSERT INTO equipe(nom_equipe,specialite) VALUES(:nom,:spec)";
+                $req = $this->db->prepare($sql);
+                $req->bindParam(':nom', $nom, PDO::PARAM_STR);
+                $req->bindParam(':spec', $spec, PDO::PARAM_STR);
+
+                if($req->execute())
+                {
+                    $sql = "SELECT nom_equipe,id_equipe FROM equipe WHERE nom_equipe=:nom";
+                    $req = $this->db->prepare($sql);
+                    $req->bindParam(':nom', $nom, PDO::PARAM_STR);
+                    $req->execute();
+
+                    if($data_e = $req->fetch(PDO::FETCH_ASSOC))
+                    {
+
+                        foreach ($membre_array as $id_membre) {
+
+                            if(!(empty($id_membre)))
+                            {
+                                echo $id_membre;
+                                echo $data_e['id_equipe'];
+                                $sql = "INSERT INTO membre_equipe(id_utilisateur,id_equipe) VALUES(:id_membre,:id_eq)";
+                                $req = $this->db->prepare($sql);
+                                $req->bindParam(':id_membre', $id_membre, PDO::PARAM_INT);
+                                $req->bindParam(':id_eq', $data_e['id_equipe'], PDO::PARAM_INT);
+
+                                 if(!($req->execute()))
+                                    $err = $this->db->errorInfo()[2];
+                            }
+                           
+                        }
+                    }
+                    else
+                        $err = "Problème d'insertion du nom et de la spécialité dans la BDD";
+                }
+
+                else
+                    $err = "Problème d'insertion du nom et de la spécialité dans la BDD";
+            }
+            
+        }
+        return $err;
     }
+
 
 }
 
