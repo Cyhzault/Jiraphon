@@ -22,7 +22,7 @@ class ModelLogin extends Model
 			if(password_verify($pswd,Trim($data['mdp'])))
 			{
 				$_SESSION['id']= md5(rand());
-				$_SESSION['pseudo']=$_POST['pseudo'];
+				$_SESSION['pseudo']=htmlspecialchars($_POST['pseudo']);
 				return true;		
 			}
 

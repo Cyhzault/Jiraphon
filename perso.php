@@ -37,7 +37,7 @@ else{
 	$photo=$user->getPhoto();
 
 	$view->beginContainer();
-	$view->ShowInfoPerso($prenom, $nom, $pseudo, $fonction, "./photo/inconnu.jpg");
+	$view->ShowInfoPerso($prenom, $nom, $pseudo, $fonction, $photo);
 	$view->ShowLienPerso();
 	$view->endDiv();
 }

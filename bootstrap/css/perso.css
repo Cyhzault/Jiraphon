@@ -3,21 +3,30 @@
 */
 .footer
 {
-	position: absolute;
-	bottom: inherit;
+	height: 50px;
+  	background-color: #2a2927;
+  	bottom:0px;
+  	left:0px;
+  	right:0px;
+  	margin-bottom:0px;
+  	padding-bottom: 0px;
+	/*position: inherit;
+	margin-bottom: 0;
 	width:100%;
-	background-color : black; 
+	background-color : #353535; 
+	*/
 }
 .right
 {
-float: right;
-margin-right: 10px; 
+	float: right;
+	margin-right: 10px;
+	color:#FF6006; 
 }
 
 .left
 {
-float: left;
-margin-left: 10px; 
+	float: left;
+	margin-left: 10px; 
 }
 .page-header
 {
@@ -31,6 +40,17 @@ margin-left: 10px;
     color:black;
 }
 
+#wrapper{
+
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -50px;
+  /* Pad bottom by footer height */
+  padding: 0 0 50px;
+  line-height: 1.42857143;
+
+}
 .JiraphonBar
 {
    color:sienna;
@@ -141,7 +161,8 @@ a:hover
 	padding-top: 48px;
 	padding-bottom: 48px;
 	margin-top: 10px;
-	z-index: 100;
+	z-index: 5;
+
 	box-shadow: rgba(94,94,94,0.5) 8px 8px 4px;
 }
 .task.bug{
@@ -173,3 +194,125 @@ div:hover.task{
 	text-align: center;
 }
 
+.taskInfoBackground {
+	display:none;
+	position: fixed;
+	z-index: 10;
+	left:0;
+	top:0;
+	width:100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.4);
+
+}
+
+
+.taskInfoHeader{
+	padding: 2px 16px;
+	background-color: rgba(255,91,0,0.96);
+	color: white;
+	border-radius: inherit;
+}
+
+.taskInfoBody{
+	padding:2px 16px;
+	background-color: #FFE89B ;
+
+}
+
+.taskInfoFooter{
+	padding: 2px 16px;
+	background-color: rgba(255,91,0,0.96);
+	color: white;
+
+}
+
+.taskInfoModal {
+	position: relative;
+	background-color: #FFE89B;
+	margin: 15% auto;
+	padding: 0;
+	border: 1px solid #530606;
+	width: 80%;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+	-webkit-animation-name: animatetop;
+	-webkit-animation-duration: 0.4s;
+	animation-name: animatetop;
+	animation-duration: 0.4s
+}
+
+.taskFormularyModal {
+	position: relative;
+	background-color: #FFE89B;
+	margin: 15% auto;
+	padding: 0;
+	border: 1px solid #530606;
+	width: 80%;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+	-webkit-animation-name: animatetop;
+	-webkit-animation-duration: 0.4s;
+	animation-name: animatetop;
+	animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+	from {top: -300px; opacity: 0}
+	to {top: 0; opacity: 1}
+}
+
+@keyframes animatetop {
+	from {top: -300px; opacity: 0}
+	to {top: 0; opacity: 1}
+}
+
+.closeBtn{
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.closeBtn:hover,
+.closeBtn:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+
+}
+
+.taskToManage{
+	display:none;
+}
+
+.formulary{
+	display:inherit;
+}
+
+.logo{
+	margin-left:25%;
+	margin-right:25%;
+	width:50%;
+}
+
+div [name=formulaire]
+{
+	width:80%;
+	margin:0 auto;
+}
+
+.champ
+{
+	margin:15px;
+}
+
+#ins_button
+{
+	width:80%;
+	margin:0 auto;
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus{
+	background-color: #eee;
+	color: #777;
+}

@@ -5,31 +5,31 @@
 */
 class Sprint
 {
-	private $idsprint;
+	private $id_sprint;
 	private $tab_taches;
-	private $duree;
+	private $fin;
 	private $debut;
-
+	private $id_projet;
 
 	function __construct($data)
 	{
 		$this->hydrate($data);
 	}
-function getIdSprint(){return $this->$idsprint}
-function getTab_Taches(){return $this->$tab_taches}
-function getDuree(){return $this->$duree}
-function getDebut(){return $this->$debut}
+function getId_sprint(){return $this->id_sprint;}
+function getId_projet(){return $this->id_projet;}
+function getFin(){return $this->fin;}
+function getDebut(){return $this->debut;}
 
-function setIdSprint($sprint){$this->$idsprint=$sprint}
-function setTab_Taches($taches){$this->$idprojet=$taches}
-function setDuree($duree){$this->$statut=$duree}
-function setDebut($debut){$this->$idcreateur=$debut}
+function setId_sprint($sprint){$this->id_sprint=$sprint;}
+function setFin($fin){$this->fin = $fin;}
+function setId_projet($idProjet){$this->id_projet=$idProjet;}
+function setDebut($debut){$this->idcreateur=$debut;}
 
 
 public function dataToArray()
 	{
 
-		$data = array('idsprint' => $this->idsprint, 'Taches' => $this->tab_taches, 'duree' => $this->duree, 'debut' => $this->debut);
+		$data = array('SprintId' => $this->id_sprint, 'date_fin' => $this->fin, 'date_deb' => $this->debut,'ProjectId'=>$this->id_projet);
 		
 		return $data;
 	}
@@ -56,4 +56,4 @@ private function hydrate(array $donnees)
 
 
 
->
+?>

@@ -1127,6 +1127,7 @@ img {
 }
 .img-rounded {
   border-radius: 6px;
+  border:2px solid #000000;
 }
 .img-thumbnail {
   display: inline-block;
@@ -1618,6 +1619,7 @@ pre code {
   min-height: 1px;
   padding-right: 15px;
   padding-left: 15px;
+
 }
 .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
   float: left;
@@ -2632,6 +2634,7 @@ input[type="search"] {
 }
 .form-group {
   margin-bottom: 15px;
+  
 }
 .radio,
 .checkbox {
@@ -4971,7 +4974,7 @@ a.badge:focus {
 }
 .jumbotron p {
   margin-bottom: 15px;
-  font-size: 21px;
+  font-size: 15px;
   font-weight: 200;
 }
 .jumbotron > hr {
@@ -5003,7 +5006,9 @@ a.badge:focus {
 }
 .thumbnail {
   display: block;
-  padding: 4px;
+  color: #000000;
+  padding: 8px;
+  font-size: 15px;
   margin-bottom: 20px;
   line-height: 1.42857143;
   background-color: #fff;
@@ -5021,7 +5026,9 @@ a.badge:focus {
 a.thumbnail:hover,
 a.thumbnail:focus,
 a.thumbnail.active {
-  border-color: #337ab7;
+  border-color: #000000;
+  color:#E3910C;
+  text-decoration: none;
 }
 .thumbnail .caption {
   padding: 9px;
@@ -5466,6 +5473,7 @@ button.list-group-item-danger.active:focus {
   border-bottom: 1px solid transparent;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+  font-size: 2px;
 }
 .panel-heading > .dropdown .dropdown-toggle {
   color: inherit;
@@ -6758,3 +6766,4 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+

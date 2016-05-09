@@ -17,7 +17,7 @@ class Model
 	{
 		try {
 
-			$bdd = new PDO('pgsql:host=localhost;dbname=Jiraphon','postgres','2j\'apgsql2'); //remplacer MOT_DE_PASSE par votre mdp db.
+			$bdd = new PDO('pgsql:host=localhost;dbname=postgres','postgres','Scaler'); //remplacer MOT_DE_PASSE par votre mdp db.
 			return $bdd;
 
 		} catch (PDOException $e) {

@@ -4,7 +4,7 @@
 *@author Niark
 */
 
-require_once("../Jiraphon/ViewLogin.php");
+require_once("./ViewLogin.php");
 class ViewModif extends ViewLogin
 {
 	function ShowModifSuccess()
@@ -57,11 +57,10 @@ class ViewModif extends ViewLogin
 	{	
 		echo"
 			<h2>Modification photo de profil</h2>
-			<form action='' method='POST' enctype='multipart/form-data' >
+			<form action='./modif.php?p=2' method='POST' enctype='multipart/form-data' >
 				<div class='form-group'>
 					<label>Photo : </label>
-						<input name='photo' id='photo' type='file' class='form-control' placeholder='Choisissez votre photo'>
-					</div>
+						<input name='photo' type='file' class='form-control' placeholder='Choisissez votre photo'>
 					<button id='photo_button' class='btn btn-primary' type='submit' style='float:right; margin:5px'>Confirmer</button>
 				</div>
 			</form>

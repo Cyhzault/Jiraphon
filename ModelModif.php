@@ -3,23 +3,22 @@
 /**
 * 
 */
-require_once("../Jiraphon/ModelLogin.php");
+require_once("./ModelLogin.php");
 class ModelModif extends ModelLogin
 {
 	function verifOldMdp($pseudo, $mdp)
 	{
 
-		$pseudo = htmlspecialchars($pseudo);
-		$mdp = htmlspecialchars($mdp);
+		$pseudo = (string) $pseudo;
+		$mdp = (string) $mdp;
 
 		$sql="SELECT mdp FROM utilisateur WHERE login=:pseudo";
 		$req=$this->db->prepare($sql);
-		$req->bindParam(':pseudo', $pseudo);
+		$req->bindParam(':pseudo', $pseudo,PDO::PARAM_STR);
 		$req->execute();
-
-		if($data = $req->fetch(PDO::FETCH_ASSOC))
+		while($data = $req->fetch(PDO::FETCH_ASSOC))
 		{
-			if(password_verify(Trim($mdp),Trim($data['mdp'])))
+			if(password_verify($mdp,Trim($data['mdp'])))
 			{
 				return true;		
 			}
@@ -29,41 +28,35 @@ class ModelModif extends ModelLogin
 
 	function changeMdp($pseudo, $newMdp, $mdp)
 	{
-		$mdp = htmlspecialchars($mdp);
-		$newMdp = htmlspecialchars($newMdp);
+		$mdp = (string) $mdp;
+		$newMdp = (string) $newMdp;
 		//Vérification que les deux pswd entrés sont identiques
 		if(strcmp($mdp,$newMdp)==0)
 		{
-			$sql="UPDATE utilisateur SET mdp=:newMdp WHERE login=:pseudo AND mdp=:mdp ";
-			$req=$this->$db->prepare($sql);
-			$req->bindParam(':newMdp',$newMdp,':pseudo', $pseudo, ':mdp', $mdp);
-			$req->execute();
-
-	//si on a bien récup l'utilisateur
-			if($data = $req->fetch(PDO::FETCH_ASSOC))
-			{
-				return true;		
-			}	
+			$sql="UPDATE utilisateur SET mdp=:newMdp WHERE login=:pseudo";
+			$req=$this->db->prepare($sql);
+			$req->bindParam(':newMdp',$newMdp,PDO::PARAM_STR);
+			$req->bindParam(':pseudo', $pseudo,PDO::PARAM_STR);
+			if($req->execute())
+				return true;
 		}
 		return false;
 	}
 
 
-//TODO
+
 	function changePhoto($pseudo, $photo)
 	{
-		$pseudo = htmlspecialchars($pseudo);
-
+		$pseudo = (string) $pseudo;
+		$name = "photo/".$photo['name'];
+		move_uploaded_file($photo['tmp_name'],$name);
 		$sql="UPDATE utilisateur SET photo=:photo WHERE login=:pseudo";
 		$req=$this->db->prepare($sql);
-		$req->bindParam(':photo', $photo, ':pseudo', $pseudo);
-		$req->execute();
+		$req->bindParam(':photo', $name);
+		$req->bindParam(':pseudo', $pseudo);
+		return ($req->execute());
 
-		if($data = $req->fetch(PDO::FETCH_ASSOC))
-		{
-			return true;		
-		}	
-		return false;
+
 	}
 }
 

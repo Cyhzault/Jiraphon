@@ -94,7 +94,7 @@ class Controler
 		$this->view->endDiv(); //Container
 		$this->view->endDiv(); //PageWrapper
 		$this->view->endDiv(); //Wrapper
-		//$this->view->footer(); //footer
+		$this->view->footer(); //footer
 	}
 }
 

@@ -8,7 +8,7 @@ class Task
 {
 	private $idTache;
 	private $nom;
-	private $desciption;
+	private $description;
 	private $statut;
 	private $dateDebut;
 	private $dateFin;
@@ -17,6 +17,7 @@ class Task
 	private $idCreateur;
 	private $idUtilisateur;
 	private $dureeReele;
+	private $idProjet;
 
 	function __construct($data)
 	{
@@ -24,7 +25,7 @@ class Task
 	}
 function getIdTache(){return $this->idTache;}
 function getNom(){return $this->nom;}
-function getDescription(){return $this->desciption;}
+function getDescription(){return $this->description;}
 function getStatut(){return $this->statut;}
 function getDateDebut(){return $this->dateDebut;}
 function getDateFin(){return $this->dateFin;}
@@ -33,23 +34,25 @@ function getValidation(){return $this->validation;}
 function getIdCreateur(){return $this->idCreateur;}
 function getIdUtilisateur(){return $this->idUtilisateur;}
 function getDureeReele(){return $this->dureeReele;}
+function getIdProjet(){return $this->idProjet;}
 
 function setId_tache($tache){$this->idTache=$tache;}
 function setNom($nom){$this->nom=$nom;}
-function setDesc($desc){$this->desciption=$desc;}
+function setDescription($desc){$this->description=$desc;}
 function setEtat($statut){$this->statut=$statut;}
 function setDate_deb($dateDeb){$this->dateDebut=$dateDeb;}
 function setDate_fin($dateFin){$this->dateFin=$dateFin;}
 function setDureeEstimee($dateDeb, $dateFin){$this->dureeEstimee=$dateDeb-$dateFin;}
-function setId_createur($createur){$this->idcreateur=$createur;}
+function setId_createur($createur){$this->idCreateur=$createur;}
 function setId_utilisateur($utilisateur){$this->idUtilisateur=$utilisateur;}
 function setDureeReele($dur){$this->dureeReele=$dur;}
+function setId_projet($projet){$this->idProjet=$projet;}
 
 public function dataToArray()
 	{
 
-		$data = array('id_tache' => $this->idTache, 'nom' => $this->nom, 'desc'=>$this->desciption, 'etat'=>$this->statut, 'date_deb'=>$this->dateDebut, 'date_fin'=>$this->dateFin,
-			'validation'=>$this->validation, 'id_createur'=>$this->idCreateur, 'id_utilisateur'=>$this->idUtilisateur);
+		$data = array('id_tache' => $this->idTache, 'nom' => $this->nom, 'desc'=>$this->description, 'etat'=>$this->statut, 'date_deb'=>$this->dateDebut, 'date_fin'=>$this->dateFin,
+			'validation'=>$this->validation, 'id_createur'=>$this->idCreateur, 'id_utilisateur'=>$this->idUtilisateur, 'id_projet'=>$this->idProjet);
 		
 		return $data;
 	}

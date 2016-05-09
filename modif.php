@@ -2,7 +2,7 @@
 
 /**
 *@author Niark
-*/
+**/
 
 	require_once("./Controler.php");
 	require_once("./ViewModif.php");
@@ -65,13 +65,13 @@ else
 //pour changer photo
 	else if(isset($_GET['p'])){
 		//demande changement éffectuée
-		if (isset($_POST['photo']))
+		if (isset($_FILES['photo']))
 		{
 			//cas mauvais format
-			if(!$model->verif_image($_POST['photo'])){}
+			if(!$model->verif_image($_FILES['photo'])){}
 			else
 			{
-				if(!$model->changePhoto($_SESSION['pseudo'], $_POST['photo']))
+				if(!$model->changePhoto($_SESSION['pseudo'], $_FILES['photo']))
 				{
 					$view->ShowModifFailed();
 				}

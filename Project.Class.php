@@ -31,12 +31,12 @@ class Project
 	private function setDate_fin($date_fin){$this->date_fin=$date_fin;}
 	private function setDate_deb($date_deb){$this->date_deb=$date_deb;}
 	public function setDescription($description){$this->description=$description;}
-	private function setId_chef($id_chef){$this->id_chef=$id_chef;}
+	public function setId_chef($id_chef){$this->id_chef=$id_chef;}
 
 
 	public function dataToArray()
 	{
-		$data = array('id_projet' => $this->id_projet, 'nom_projet' => $this->nomProjet, 'date_fin' => $this->date_fin, 'date_deb' => $this->date_deb,
+		$data = array('id_projet' => $this->id_projet, 'nom_projet' => $this->nom_projet, 'date_fin' => $this->date_fin, 'date_deb' => $this->date_deb,
 			'description'=>$this->description, 'id_chef'=>$this->id_chef);
 		return $data;
 	}

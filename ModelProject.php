@@ -57,9 +57,8 @@ class ModelProject extends Model
 
         $pseudo = (string) $pseudo;
         $liste = array();
-
-        //Si l'utilisateur n'appartient pas à une équipe
-        $sql = "SELECT projet.id_projet,projet.nom_projet, projet.date_deb, projet.date_fin, projet.description, projet.commanditaire FROM projet NATURAL JOIN utilisateur_in_projet NATURAL JOIN utilisateur WHERE utilisateur.nom = :pseudo";
+        
+        $sql = "SELECT projet.id_projet,projet.nom_projet, projet.date_deb, projet.date_fin, projet.description, projet.id_chef FROM projet NATURAL JOIN utilisateur_in_projet NATURAL JOIN utilisateur WHERE utilisateur.login = :pseudo";
         $req = $this->db->prepare($sql);
         $req->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
         $req->execute();
@@ -68,17 +67,6 @@ class ModelProject extends Model
         while($data = $req->fetch(PDO::FETCH_ASSOC)){
             $liste[$i]= new Project($data);
             $i = $i +1;
-        }
-
-        //Si l'utilisateur appartient à une équipe
-        $sql = "SELECT projet.id_projet,projet.nom_projet, projet.date_deb, projet.date_fin, projet.description, projet.commanditaire FROM projet NATURAL JOIN equipe_in_projet NATURAL JOIN membre_equipe NATURAL JOIN utilisateur WHERE utilisateur.nom = :pseudo";
-        $req = $this->db->prepare($sql);
-        $req->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
-        $req->execute();
-
-         while($data = $req->fetch(PDO::FETCH_ASSOC)){
-            $liste[$i]= new Project($data);
-             $i = $i +1;
         }
 
         $req->closeCursor();
@@ -125,13 +113,108 @@ class ModelProject extends Model
         return $liste;
     }
 
+    /**
+     * @param $projectId du projet, $id_chef du chef de projet
+     * @return Un array d'utilisateur qui n'appartiennent pas à une équipe
+     * @see Project
+     *
+     */
+    public function getUsersSoloInProject($projectId,$id_chef)
+    {
+        $i=0;
+        $liste = array();
+
+        $sql = "SELECT u.id_utilisateur,u.nom,u.prenom,u.fonction,u.statut,u.photo,u.login,u.mdp FROM utilisateur u NATURAL JOIN utilisateur_in_projet WHERE id_projet =:projectId AND id_utilisateur <> :id_chef
+                EXCEPT 
+                SELECT u.id_utilisateur,u.nom,u.prenom,u.fonction,u.statut,u.photo,u.login,u.mdp FROM utilisateur u NATURAL JOIN membre_equipe NATURAL JOIN equipe NATURAL JOIN equipe_in_projet WHERE id_projet =:projectId";
+        $req = $this->db->prepare($sql);
+        $req->bindParam(':projectId', $projectId, PDO::PARAM_INT);
+        $req->bindParam(':id_chef', $id_chef, PDO::PARAM_INT);
+        $req->execute();
+
+        while($data = $req->fetch(PDO::FETCH_ASSOC)){
+            $liste[$i]= new User($data);
+            $i = $i +1;
+        }
+
+        return $liste;
+
+    }
     public function getAllSprintByProjectId($projectId)
     {
         return null;
     }
+  
+  public function creationEquipe($nom,$spec,$liste_membre)
+    {
+        $membre_array=array();
+        $nom = htmlspecialchars($nom);
+        $spec = htmlspecialchars($spec);
+        $membre_array=explode(',',$liste_membre);
+        $err="";
 
+        if(empty($nom))
+        {
+            $err="Vous devez entrer un nom d'équipe";
+        }
+        else
+        {
+              //Vérification equipe pas déjà présente dans base 
+            $sql = "SELECT nom_equipe FROM equipe WHERE nom_equipe=:nom";
+            $req = $this->db->prepare($sql);
+            $req->bindParam(':nom', $nom, PDO::PARAM_STR);
+            $req->execute();
+
+            if($data = $req->fetch(PDO::FETCH_ASSOC))
+            {
+                $err="Il existe déjà une equipe portant le nom : " . $nom;
+            }
+            else
+            {
+                $sql = "INSERT INTO equipe(nom_equipe,specialite) VALUES(:nom,:spec)";
+                $req = $this->db->prepare($sql);
+                $req->bindParam(':nom', $nom, PDO::PARAM_STR);
+                $req->bindParam(':spec', $spec, PDO::PARAM_STR);
+
+                if($req->execute())
+                {
+                    $sql = "SELECT nom_equipe,id_equipe FROM equipe WHERE nom_equipe=:nom";
+                    $req = $this->db->prepare($sql);
+                    $req->bindParam(':nom', $nom, PDO::PARAM_STR);
+                    $req->execute();
+
+                    if($data_e = $req->fetch(PDO::FETCH_ASSOC))
+                    {
+
+                        foreach ($membre_array as $id_membre) {
+
+                            if(!(empty($id_membre)))
+                            {
+
+                               
+                                $sql = "INSERT INTO membre_equipe(id_utilisateur,id_equipe) VALUES(:id_membre,:id_eq)";
+                                $req = $this->db->prepare($sql);
+                                $req->bindParam(':id_membre', $id_membre, PDO::PARAM_INT);
+                                $req->bindParam(':id_eq', $data_e['id_equipe'], PDO::PARAM_INT);
+
+                                 if(!($req->execute()))
+                                    $err = $this->db->errorInfo()[2];
+                            }
+                           
+                        }
+                    }
+                    else
+                        $err = "Problème d'insertion du nom et de la spécialité dans la BDD";
+                }
+
+                else
+                    $err = "Problème d'insertion du nom et de la spécialité dans la BDD";
+            }
+            
+        }
+        return $err;
+    }
 }
-
 
 
 ?>

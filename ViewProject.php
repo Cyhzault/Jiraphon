@@ -34,9 +34,16 @@ class ViewProject extends View
         ";
     }
 
+    /**
+     * @param $project
+     * @param $sprint Sprint
+     */
     public function showProjectData($project)
     {
-        echo""; //TODO
+        /*echo"<div id='sprint_".$sprint->getId_sprint()."' class='sprint-info' >
+
+        </div>";
+        */
     }
 
     /**
@@ -69,7 +76,7 @@ class ViewProject extends View
      */
     public function showKanban($user,$todoList,$inProgress,$done,$active)
     {
-        $str="<div id='".$user->getNom()."' class='kanban ".$active."'>";
+        $str="<div id='".$user->getLogin()."_kbn' class='kanban ".$active."'>";
             $str.= "<p> Liste des tâches de l'utilisateur ".$user->getNom()."</p>";
             $str.="<div class='jumbotron col-md-12 userTaskList'>";
                 $str.=$this->getTaskListHTML("TODO",$todoList,"");
@@ -89,7 +96,7 @@ class ViewProject extends View
      */
     private function showEditableKanban($user, $todoList, $inProgress, $done,$active)
     {
-        $str="<div id='".$user->getNom()." class='kanban ".$active."'>";
+        $str="<div id='".$user->getLogin()."_kbn' class='kanban ".$active."'>";
             $str.= "<p> Liste des tâches de l'utilisateur ".$user->getNom()."</p>";
             $str.="<div class='jumbotron col-md-12 userTaskList'>";
                 $str.=$this->getTaskListHTML("TODO",$todoList,"editable");
@@ -110,18 +117,64 @@ class ViewProject extends View
     public function displayAllKanbans($user, $team, $tm,$project)
     {
 
+        //récupération des tâches de l'utilisateur.
+        $todo = $tm->getTasksToDo($user->getId_utilisateur(),$project->getId_projet());
+        $inProgress =$tm->getTasksInProgress($user->getId_utilisateur(),$project->getId_projet());
+        $done = $tm->getTasksDone($user->getId_utilisateur(),$project->getId_projet());
+
+        $this->showEditableKanban($user,$todo,$inProgress,$done,"active");
+
         foreach ($team as $usr)
         {
             //récupération des tâches de l'utilisateur.
-            $todo = $tm->getTasksToDo($usr->getIdUtilisateur(),$project->getId_projet());
-            $inProgress =$tm->getTasksInProgress($usr->getIdUtilisateur(),$project->getId_projet());
-            $done = $tm->getTasksDone($usr->getIdUtilisateur(),$project->getId_projet());
+            $todo = $tm->getTasksToDo($usr->getId_utilisateur(),$project->getId_projet());
+            $inProgress =$tm->getTasksInProgress($usr->getId_utilisateur(),$project->getId_projet());
+            $done = $tm->getTasksDone($usr->getId_utilisateur(),$project->getId_projet());
 
-            if($user->getIdUtilisateur() == $usr->getIdUtilisateur())
+            if($user->getId_utilisateur() != $usr->getId_utilisateur())
             {
-                $this->showEditableKanban($user,$todo,$inProgress,$done,"active"); //kanban de l'utilisateur
-            }else{
                 $this->showKanban($usr,$todo,$inProgress,$done,"");
+            }
+        }
+    }
+
+    /**
+     * @param $user User Current user
+     * @param $team array List of User
+     * @param $tm TaskManager
+     * @param $project Project
+     */
+    public function displayAllKanbansWithSudo($user, $team,$users, $tm,$project)
+    {
+        //récupération des tâches de l'utilisateur.
+        $todo = $tm->getTasksToDo($user->getId_utilisateur(),$project->getId_projet());
+        $inProgress =$tm->getTasksInProgress($user->getId_utilisateur(),$project->getId_projet());
+        $done = $tm->getTasksDone($user->getId_utilisateur(),$project->getId_projet());
+
+        $this->showEditableKanban($user,$todo,$inProgress,$done,"");
+
+        foreach ($team as $usr)
+        {
+            //récupération des tâches de l'utilisateur.
+            $todo = $tm->getTasksToDo($usr->getId_utilisateur(),$project->getId_projet());
+            $inProgress =$tm->getTasksInProgress($usr->getId_utilisateur(),$project->getId_projet());
+            $done = $tm->getTasksDone($usr->getId_utilisateur(),$project->getId_projet());
+
+            if($user->getId_utilisateur() != $usr->getId_utilisateur())
+            {
+                $this->showEditableKanban($usr,$todo,$inProgress,$done,"");
+            }
+        }
+        foreach ($users as $usr)
+        {
+            //récupération des tâches de l'utilisateur.
+            $todo = $tm->getTasksToDo($usr->getId_utilisateur(),$project->getId_projet());
+            $inProgress =$tm->getTasksInProgress($usr->getId_utilisateur(),$project->getId_projet());
+            $done = $tm->getTasksDone($usr->getId_utilisateur(),$project->getId_projet());
+
+            if($user->getId_utilisateur() != $usr->getId_utilisateur())
+            {
+                $this->showEditableKanban($usr,$todo,$inProgress,$done,"");
             }
         }
     }
@@ -130,19 +183,222 @@ class ViewProject extends View
     {
         $str="
             <div class='dropdown'>
-                <button class='btn btn-default dropdown-toggle' type='button' id='dropdownMenu1' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
-                    ".$user->getNom()."
+                <button class='btn btn-default dropdown-toggle' type='button' id='teamDropdown' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
+                    ".$user->getLogin()."
                     <span class='caret'></span>
                 </button>
                 <ul class='dropdown-menu' aria-labelledby='dropdownMenu1'>";
                 foreach ($team as $user)
                 {
-                    $str.="<li><a href='#'>".$user->getNom()."</a></li>";
+                    $str.="<li id='".$user->getLogin()."_drp' class='teamMember'><a href='#kanban'>".$user->getLogin()."</a></li>";
                 }
                 $str.="</ul>
             </div>";
         echo $str;
     }
 
+    public function showMultipleTeamsListDropdown($teamlist)
+    {
+        $str="
+            <div class='dropdown'>
+                <button class='btn btn-default dropdown-toggle' type='button' id='teamDropdown' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
+                    -- select --
+                    <span class='caret'></span>
+                </button>
+                <ul class='dropdown-menu' aria-labelledby='dropdownMenu1'>";
+        foreach ($teamlist as $team)
+        {
+            $str.="<li class='dropdown-header'>".$team->getNom_equipe()."</li>";
+            foreach ($team->getUtilisateurs() as $user)
+            {
+                $str.="<li id='".$user->getLogin()."_drp' class='teamMember'><a href='#kanban'>".$user->getLogin()."</a></li>";
+
+            }
+        }
+        $str.="</ul>
+            </div>";
+        echo $str;
+    }
+
+
+    public function displayModalTaskInfo()
+    {
+        $str="
+            <div id='taskInfo' class='taskInfoBackground'>
+                <div class='container taskInfoModal '>
+                    <div class='taskInfoHeader row'>
+                        <span class='closeBtn'>×</span>
+                        <h2 id='task-name'></h2>
+                    </div>
+                    <div class='taskInfoBody row'>
+                        <p id='task-desc'></p>
+                        <div class='col-md-12'>
+                            <div class='col-md-6'>
+                                <p>Date de début: <input id='task-deb'type='date' value=''/></p>
+                            </div>
+                            <div class='col-md-6'>
+                                <p>Date de fin: <input id='task-fin' type='date' value=''/></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='taskInfoFooter row'>
+                        <a href='./#' class='right btn btn-info'>EDIT</a>
+                    </div>
+                </div>
+            </div>
+        
+        ";
+        echo $str;
+
+    }
+
+
+    public function displayModalFormulary($teamList,$users)
+    {
+        $str="
+            <div id='taskFormulary' class='taskInfoBackground'>
+                <div class='container taskFormularyModal '>
+                    <div class='taskInfoHeader row'>
+                        <span class='closeBtn'>×</span>
+                        <h2 id='taskFormulary-name'></h2>
+                        <div id='taskFormulary-id' style='display:none'></div>
+                    </div>
+                    <div class='taskInfoBody row'>
+                        <div id='formularyError' class='alert alert-danger' style='display:none'></div>
+                        <p id='taskFormulary-desc'></p>";
+                        $str.=$this->getUserListDropDownHTML($teamList,$users);
+
+                    $str.="</div>
+                    <div class='taskInfoFooter row'>
+                        <a id='deleteBtn' href='#kanban' class='left btn btn-danger'>SUPPRIMER</a>
+                        <a id='submitBtn' href='#kanban' class='right btn btn-info'>VALIDER</a>
+                    </div>
+                </div>
+            </div>
+        
+        ";
+        echo $str;
+
+    }
+
+
+    public function showAdminToolbar($teamList,$users)
+    {
+        echo "<div class='container col-md-12'>
+            <div class='col-md-3'>";
+                $this->showMultipleUserDropdown($teamList,$users);
+            echo "</div>
+            <div class='col-md-3'>
+               <a id='taskToManageBtn' href='#taskToManage' class='btn btn-info'>Tâche à traiter</a>
+            </div>
+        </div>";
+
+    }
+
+    /**
+     * @param $taskList
+     * @param $um UserManager
+     */
+    public function displayTaskToManage($taskList,$um)
+    {
+        $str="
+            <div id='taskToManage' class='taskToManage'>
+            <p>Tableau de getion des tâches non attribuées.</p>
+            <div class='panel panel-default'>
+            <div class='panel-heading'>Tâches à administrer</div>
+            <table class='table'>
+            <thead><tr><th>#</th><th>Type</th><th>Nom</th><th>Créateur</th><th>Priorité</th></tr></thead>
+            <tbody>";
+            foreach ($taskList as $task)
+            {
+                $creator = $um->getUserById($task->getIdCreateur());
+                $data = explode("-",$task->getNom());
+                $str.="<tr id='".$task->getIdtache()."'class='manageableTask'><th>".$task->getIdtache()."</th><th>".$data[0]."</th><th>".$data[1]."</th><th>".$creator->getLogin()."</th> <th>HIGH</th></tr>";
+            }
+        $str.="</tbody>
+            </table>
+            </div>
+        </div>";
+        echo $str;
+    }
+
+    private function getTeamListDropDownHTML($teamList)
+    {
+        $str="
+            <div class='dropdown'>
+                <button class='btn btn-default dropdown-toggle' type='button' id='assignmentDropdown' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
+                -- select --
+                    <span class='caret'></span>
+                </button>
+                <ul class='dropdown-menu' aria-labelledby='dropdownMenu1'>";
+            foreach ($teamList as $team)
+            {
+                $str.="<li class='dropdown-header'>".$team->getNom_equipe()."</li>";
+                foreach ($team->getUtilisateurs() as $user)
+                {
+                    $str.="<li id='".$user->getLogin()."_frm' class='formulary-teamMember'><a href='#kanban'>".$user->getLogin()."</a></li>";
+
+                }
+            }
+        $str.="</ul>
+            </div>";
+        return $str;
+    }
+
+    private function getUserListDropDownHTML($teamList, $users)
+    {
+        $str="
+            <div class='dropdown'>
+                <button class='btn btn-default dropdown-toggle' type='button' id='assignmentDropdown' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
+                -- select --
+                    <span class='caret'></span>
+                </button>
+                <ul class='dropdown-menu' aria-labelledby='dropdownMenu1'>";
+        foreach ($teamList as $team)
+        {
+            $str.="<li class='dropdown-header'>".$team->getNom_equipe()."</li>";
+            foreach ($team->getUtilisateurs() as $user)
+            {
+                $str.="<li id='".$user->getLogin()."_frm' class='formulary-teamMember'><a href='#kanban'>".$user->getLogin()."</a></li>";
+
+            }
+        }
+        $str.="<li class='dropdown-header'>Sans équipe</li>";
+        foreach ($users as $user)
+        {
+                $str.="<li id='".$user->getLogin()."_frm' class='formulary-teamMember'><a href='#kanban'>".$user->getLogin()."</a></li>";
+        }
+        $str.="</ul>
+            </div>";
+        return $str;
+    }
+
+    private function showMultipleUserDropdown($teamList, $users)
+    {
+        $str="
+            <div class='dropdown'>
+                <button class='btn btn-default dropdown-toggle' type='button' id='teamDropdown' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
+                    -- select --
+                    <span class='caret'></span>
+                </button>
+                <ul class='dropdown-menu' aria-labelledby='dropdownMenu1'>";
+        foreach ($teamList as $team)
+        {
+            $str.="<li class='dropdown-header'>".$team->getNom_equipe()."</li>";
+            foreach ($team->getUtilisateurs() as $user)
+            {
+                $str.="<li id='".$user->getLogin()."_drp' class='teamMember'><a href='#kanban'>".$user->getLogin()."</a></li>";
+
+            }
+        }
+        $str.="<li class='dropdown-header'>Sans équipe</li>";
+        foreach ($users as $user)
+        {
+            $str.="<li id='".$user->getLogin()."_frm' class='teamMember'><a href='#kanban'>".$user->getLogin()."</a></li>";
+        }
+        $str.="</ul>
+            </div>";
+        echo $str;
+    }
 
 }

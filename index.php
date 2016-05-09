@@ -19,11 +19,10 @@
 
 	$ctrl->beginPage("Jiraphon","Jiraphon V0.1");
 	//////////////////////  Début contenu \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-	
 
 	
 	$view->beginContainer();
-	$view->showBar();
+	$view->displayWelcomeMessage();
 
 	$view->endDiv();
 	
