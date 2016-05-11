@@ -47,11 +47,11 @@ class ModelLogin extends Model
 		//Vérification de l'extension
 		else
 		{
-			$extensions_valides = array( 'jpg' , 'jpeg' , 'gif' , 'png' );
+			$extensions_valides = array( 'jpg' , 'jpeg' , 'png' );
 			$extension_upload = strtolower(  substr(  strrchr($file_photo['name'], '.')  ,1)  );
 
 			if ( in_array($extension_upload,$extensions_valides) == false) 
-				$err="Extension de l'image incorrecte, extensions autorisées : jpg, jpeg, gif, png";	
+				$err="Extension de l'image incorrecte, extensions autorisées : jpg, jpeg, png";	
 
 			else
 			{

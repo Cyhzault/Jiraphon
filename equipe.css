@@ -1,0 +1,180 @@
+li
+{
+	list-style:none; 
+}
+ul
+{
+	padding:0;
+}
+
+.informations
+{
+	position:absolute;
+	z-index:2;
+	visibility:hidden;
+	/*width:20%;*/
+	text-align: center;
+	
+	top: 50%; /* poussé de la moitié de hauteur du référent */
+  	transform: translateY(-50%); /* centrer verticalement */
+}
+
+div[name='cp']
+{
+	width:20%;
+}
+
+div[name='membre']
+{
+	left:0px;
+	width:100%;
+}
+
+.informations ul li p
+{
+	font-size:125%;
+	font-weight: bold;
+}
+
+
+.equipe
+{
+	position: relative;
+	float:left;
+	width:30%;
+	margin:10px;
+}
+
+.tableau_proj
+{
+	margin:10px;
+	padding:20px;
+}
+
+.panel-default>.panel-heading
+{
+	font-size: 30px;
+	text-align: center;
+}
+
+h4
+{
+	margin:0px;
+}
+
+.description
+{
+	font-style: italic;
+	font-size: 2px;
+	text-align: justify;
+	width:80%;
+	text-align-last: center;
+}
+
+.temps_projet
+{
+	width: 30%; 
+	margin: 10 auto;
+	font-weight: bold;
+	font-size: 15px;
+	padding: 7px;
+	border: 2px solid black;
+}
+
+.date_deb
+{
+	position:relative;
+	float:left;  
+}
+
+.date_fin
+{
+	position:relative;
+	float:right;
+}
+
+.spec
+{
+	margin-left: 4%;
+	font-size: 16px;
+	color: #F07C00;
+	font-style: italic;
+	margin-bottom: 10px;
+}
+
+.ui-autocomplete {
+  font-size: 15px;
+  color:black;
+  background-color: white;
+  width:1px;
+  display: block;
+}
+
+.ui-menu {
+    list-style:none;
+    padding: 8px;
+    margin: 0;
+    display:block;
+    float: left;
+
+}
+
+.ui-menu .ui-menu-item{
+	padding:5px;
+	font-style: italic;
+}
+
+.ui-menu .ui-menu-item:hover{
+	background-color: #FA9B3C;
+	font-weight: bold;
+} 
+
+.ui-helper-hidden-accessible
+{
+	display: hidden;
+}
+
+#plus
+{
+	float: left;
+}
+
+figcaption
+{
+	font-size: 15px;
+	font-weight: bold;
+	margin-left: 10%;
+	margin-top:5%;
+	display: block;
+
+}
+
+#membres,#equipes
+{
+	display: none;
+	margin:15px;
+}
+
+#legende
+{
+	font-weight: bold;
+    padding: 4px;
+    margin-left: 50px;
+    font-size: 18px;
+}
+
+#addMembre
+{
+	position: relative;
+	float:right;
+}
+
+#form_equipeadd
+{
+	margin-top:15px;
+}
+
+#equipe_addm
+{
+	margin-bottom: 15px;
+}

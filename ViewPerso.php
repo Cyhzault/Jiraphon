@@ -21,12 +21,13 @@ class ViewPerso extends View
 	 	echo "
 	 		<section>
 				<center><div style='margin : 60px;'>
-					<a class='btn btn-primary' href='equipe.php' style='margin-top:5px;'>Mon equipe</a>
-					<a class='btn btn-primary' href='project.php' style='margin-top:5px;'>Mes projets</a>
+					<a class='btn btn-primary' href='equipe.php' style='margin-top:5px;'>Mes projets</a>
+					<a class='btn btn-primary' href='project.php' style='margin-top:5px;'>Mes taches</a>
 					<a class='btn btn-primary' href='CreationProject.php' style='margin-top:5px;'>Créer projet</a>
+
 				</div></center>
 				<div style='margin-top:40px; margin-left:500px; float:right;'>
-					<a class='btn btn-primary' href='project.php'>Archives</a>
+			
 				</div>
 			</section>";
 	 }

@@ -22,13 +22,37 @@ class TeamManager
 
     ///////////////////////////// Requests \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+    public function getAllOtherNamesTeam($projectId)
+    {
+        $liste_myequipe=array();
+        //Nom equipe du projet en cours
+        $liste_equipe=$this->getAllTeamInProject($projectId);
+        foreach ($liste_equipe as $myequipe) {
+            array_push($liste_myequipe,$myequipe->getNom_equipe());
+        }
+
+        $liste_equ=array();
+        $sql = "SELECT * FROM equipe";
+        $req = $this->db->prepare($sql);
+        $req->execute();
+        while($data = $req->fetch(PDO::FETCH_ASSOC))
+        {
+            array_push($liste_equ, $data['nom_equipe']);
+        }
+            
+        $req->closeCursor();
+        //On renvoie seulement les équipes qui ne sont pas dans le projet courant
+        $result=array_diff($liste_equ,$liste_myequipe);
+        return $result;
+    }
+
 
     public function getUsersFromTeamId($idTeam)
     {
         require_once('./User.Class.php');
         $list = array();
         $i = 0;
-        $sql = "SELECT utilisateur.id_utilisateur, utilisateur.nom, utilisateur.prenom,utilisateur.fonction,utilisateur.login FROM utilisateur JOIN membre_equipe ON utilisateur.id_utilisateur = membre_equipe.id_utilisateur WHERE membre_equipe.id_equipe=:idTeam";
+        $sql ="SELECT * FROM utilisateur NATURAL JOIN membre_equipe WHERE membre_equipe.id_equipe=:idTeam";
         $req = $this->db->prepare($sql);
         $req->bindParam(':idTeam',$idTeam,PDO::PARAM_INT);
         $req->execute();
@@ -59,6 +83,7 @@ class TeamManager
         return $result;
 
     }
+
     public function getAllTeamInProject($projectId)
     {
         $liste = array();
@@ -90,5 +115,32 @@ class TeamManager
         $req->closeCursor();
         return $liste;
     }
-}
 
+    /**
+     * @param $projectId du projet, $id_chef du chef de projet
+     * @return Un array d'utilisateur qui n'appartiennent pas à une équipe
+     * @see Project
+     *
+     */
+    public function getUsersSoloInProject($projectId,$id_chef)
+    {
+        $i=0;
+        $liste = array();
+
+        $sql = "SELECT u.id_utilisateur,u.nom,u.prenom,u.fonction,u.statut,u.photo,u.login,u.mdp FROM utilisateur u NATURAL JOIN utilisateur_in_projet WHERE id_projet =:projectId AND id_utilisateur <> :id_chef
+                EXCEPT 
+                SELECT u.id_utilisateur,u.nom,u.prenom,u.fonction,u.statut,u.photo,u.login,u.mdp FROM utilisateur u NATURAL JOIN membre_equipe NATURAL JOIN equipe NATURAL JOIN equipe_in_projet WHERE id_projet =:projectId";
+        $req = $this->db->prepare($sql);
+        $req->bindParam(':projectId', $projectId, PDO::PARAM_INT);
+        $req->bindParam(':id_chef', $id_chef, PDO::PARAM_INT);
+        $req->execute();
+
+        while($data = $req->fetch(PDO::FETCH_ASSOC)){
+            $liste[$i]= new User($data);
+            $i = $i +1;
+        }
+
+        return $liste;
+
+    }
+}

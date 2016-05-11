@@ -140,12 +140,13 @@ class ModelProject extends Model
         return $liste;
 
     }
+
     public function getAllSprintByProjectId($projectId)
     {
         return null;
     }
   
-  public function creationEquipe($nom,$spec,$liste_membre)
+    public function creationEquipe($nom,$spec,$liste_membre)
     {
         $membre_array=array();
         $nom = htmlspecialchars($nom);

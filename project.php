@@ -45,11 +45,12 @@
 			$cm = new TeamManager($model->getDb());
 			$pm = new ProjectManager($model->getDb());
 
-			$sprint = $pm->getCurrentSprintByProjectId($project->getId_projet());
+			//$sprint = $pm->getCurrentSprintByProjectId($project->getId_projet());
 
 
 			//Affichage des infos du projet
-			$view->showProjectData($project,$sprint);
+			//$view->showProjectData($project,$sprint);
+			$view->showProjectData($project);
 
 
 			//récupération de l'utilisateur courant
@@ -60,18 +61,20 @@
 			{
 				//récupération de l'équipe de l'utilisateur.
 				$teamList = $cm->getAllTeamInProject($project->getId_projet());
-				$view->showAdminToolbar($teamList);
+				$users = $cm->getUsersSoloInProject($project->getId_projet(),$user->getId_utilisateur());
+				$view->showAdminToolbar($teamList,$users);
 
 				foreach ($teamList as $team) {
-					$view->displayAllKanbansWithSudo($user,$team->getUtilisateurs(),$tm,$project);
+					$view->displayAllKanbansWithSudo($user,$team->getUtilisateurs(),$users,$tm,$project);
 				}
 				$view->displayTaskToManage($tm->getTaskToManage($project->getId_projet()),$um);
-				$view->displayModalFormulary($teamList);
+				$view->displayModalFormulary($teamList,$users);
 			}else{
 				
 				//récupération de l'équipe de l'utilisateur.
 				$teamId = $cm->getTeamIdFromUserId($user->getId_utilisateur());
 				$team = $cm->getUsersFromTeamId($teamId);
+
 
 				$view->showTeamListDropdown($user,$team);
 

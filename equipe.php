@@ -2,14 +2,14 @@
 	require_once("./Controler.php");
 	require_once("./ModelProject.php");
 	require_once("./ViewEquipe.php");
+	require_once("./TeamManager.Class.php");
 
 	$ctrl = new Controler();
 	$modelpro = new ModelProject();
 	$view = new ViewEquipe();
+	$tm = new TeamManager($modelpro->getDb());
 
 	//////////////////////  Début contenu \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-	
 
 	if(isset($_GET['creation']))
 	{
@@ -17,9 +17,9 @@
 		$view->beginContainer();
 		$view->showBar();
 		
-		if(isset($_POST['nom_e']) && isset($_POST['spec']) && isset($_POST['liste_membre']))
+		if(isset($_POST['crea_button']))
 		{
-			$err=$modelpro->creationEquipe($_POST['nom_e'],$_POST['spec'],$_POST['liste_membre']);
+			$err=$modelpro->creationEquipe($_POST['nom_e'],$_POST['spec'],$_POST['liste_membre5']);
 			if(empty($err))
 				$view->showCreationSuccess();
 			else
@@ -27,11 +27,12 @@
 			
 		}
 		else
-			$view->showEquipeFormulary();
+			$view->showEquipeFormulary(5);
 	}
+	
 	else
 	{
-		$ctrl->beginPage("Equipes","Apperçu des equipes");
+		$ctrl->beginPage("Equipes","Aperçu des equipes");
 		$view->beginContainer();
 		$view->showBar();
 
@@ -64,6 +65,8 @@
 			if($users != null)
 				$view->showUsers($users,$id);
 
+			//Affichage ajout equipe/membre au projet
+			$view->showAddMembre($projects,$projet,$tm->getAllOtherNamesTeam($projet->getId_projet()));
 
 			// Fin balise projet et equipe
 			$view->ListeEquipe(false);

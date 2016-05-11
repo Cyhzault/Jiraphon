@@ -22,7 +22,6 @@ class ViewCreation extends View
 					<label>date début: </label><input type='date' name='date_deb' class='form-control' placeholder='debut du projet'>
 					<label>date fin: </label><input type='date' name='date_fin' class='form-control' placeholder='fin du projet'>
 					<label>description: </label><input type='text' name='description' class='form-control' placeholder='votre description ici'>
-					<label>comanditaire: </label><input type='text' name='comanditaire' class='form-control' placeholder='comanditer par'>
 				</div>
 				<button class='btn btn-primary' type='submit'>Création</button>
 			</form>
