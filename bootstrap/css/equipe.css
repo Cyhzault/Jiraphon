@@ -107,6 +107,7 @@ h4
   color:black;
   background-color: white;
   width:1px;
+  display: block;
 }
 
 .ui-menu {
@@ -148,12 +149,7 @@ figcaption
 
 }
 
-#utilisateur_form
-{
-	display: none;
-}
-
-#membres
+#membres,#equipes
 {
 	display: none;
 	margin:15px;
@@ -165,4 +161,20 @@ figcaption
     padding: 4px;
     margin-left: 50px;
     font-size: 18px;
+}
+
+#addMembre
+{
+	position: relative;
+	float:right;
+}
+
+#form_equipeadd
+{
+	margin-top:15px;
+}
+
+#equipe_addm
+{
+	margin-bottom: 15px;
 }
